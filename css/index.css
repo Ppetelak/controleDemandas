@@ -1,0 +1,46 @@
+.bodyIndex{
+    background: var(--blue);
+    padding-left: 2rem;
+    align-items: center;
+    color: var(--white);
+}
+
+.bodyIndex .container {
+    margin: auto;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+.bodyIndex h1{
+    font-size: 3rem;
+}
+
+.bodyIndex h2{
+    font-size: 2.5rem;
+}
+
+.bodyIndex h1 {
+    font-size: 2rem;
+}
+
+.bodyIndex p{
+    font-size: 1rem;
+}
+
+.solicitacao {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.novaSolicitacao {
+    background: var(--blue-200);
+    color: var(--blue);
+    font-weight: 500;
+}
+
+.novaSolicitacao:hover {
+    background: var(--orange);
+}
