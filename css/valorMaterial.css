@@ -1,0 +1,158 @@
+.bodySolicitacao{
+    background: var(--white-100);
+    padding-left: 2rem;
+    align-items: center;
+    color: var(--white);
+}
+
+.impresso {
+    background: var(--blue);
+}
+
+.impresso label, .impresso span {
+    color: var(--white);
+}
+
+.solicitacao {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+}
+
+form {
+    width: 100%;
+    align-items: center;
+}
+
+label {
+    color: var(--gray);
+    text-align: center;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+}
+
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #8BD1CF;
+    background: rgba(139, 209, 207, 0.00);
+}
+
+span {
+    font-size: 0.8rem;
+    color: var(--gray);
+}
+
+#btnProximo {
+    background: #FEE4D9;
+    color: var(--orange);
+    border-color: var(--orange);
+}
+
+h3 {
+    color: var(--orange);
+    font-size: 1.5rem;
+}
+
+.btn-secondary:not(:checked) {
+    border-radius: 14px;
+    border: 2px solid var(--blue);
+    background: rgba(217, 217, 217, 0.00);
+    color: var(--blue);
+}
+
+.btn-secondary:not(:checked) span {
+    color: var(--blue);
+}
+
+.btn-check:checked + .btn-secondary, 
+.btn-check:checked + .btn-secondary:hover {
+    background-color: var(--blue);
+    color: #fff; 
+    border-color: var(--blue)
+}
+
+.btn-check:checked + .btn-secondary span, 
+.btn-check:checked + .btn-secondary:hover span{
+    color: #fff; 
+}
+
+.btn-check:hover + .btn-secondary {
+    background-color: var(--blue); 
+    color: #fff;
+    border-color: var(--blue);
+}
+
+.btn-check:hover + .btn-secondary span {
+    color: #fff;
+}
+
+#seSim {
+    margin-top: 1rem;
+    border: 1px solid var(--blue);
+    border-radius: 10px;
+    padding: 3rem;
+    background: var(--white);
+    color: var(--blue);
+}
+
+#seSim label, #seSim span {
+    color: var(--blue);
+}
+
+#seSim label {
+    color: var(--blue);
+    font-size: 1.5rem;
+}
+
+.publico {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.material {
+    background: var(--blue-200);
+}
+
+.material label, .material span {
+    color: var(--white);
+}
+
+.material h2{
+    color: var(--gray);
+    font-size: 1rem;
+}
+
+.btn-success{
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: var(--orange);
+}
+
+.btn-success:hover{
+    border: solid 1px var(--orange);
+    background: var(--white);
+    color: var(--orange);
+}
+
+.btn-danger {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: red;
+}
+
+.btn-danger:hover{
+    border: solid 1px red;
+    background: var(--white);
+    color: red;
+}

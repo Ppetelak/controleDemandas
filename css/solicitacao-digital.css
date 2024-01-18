@@ -1,0 +1,104 @@
+.bodySolicitacao{
+    background: var(--blue);
+    padding-left: 2rem;
+    align-items: center;
+    color: var(--white);
+}
+
+.solicitacao {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+}
+
+.solicitacao .row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+
+.solicitacao > .row > img{
+    width: 20%;
+}
+
+form {
+    width: 100%;
+    align-items: center;
+}
+
+label {
+    color: var(--white);
+    text-align: center;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+}
+
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #8BD1CF;
+    background: rgba(139, 209, 207, 0.00);
+    color: var(--white);
+}
+
+.form-select option {
+    color: var(--blue);
+}
+
+span {
+    font-size: 0.8rem;
+    color: var(--gray);
+}
+
+#btnProximo {
+    background: #FEE4D9;
+    color: var(--orange);
+    border-color: var(--orange);
+    border-radius: 50px;
+}
+
+h3 {
+    color: var(--orange);
+    font-size: 1.5rem;
+}
+
+.btn-secondary:not(:checked) {
+    border-radius: 14px;
+    border: 2px solid #8BD1CF;
+    background: rgba(217, 217, 217, 0.00);
+    color: #8BD1CF;
+}
+
+.btn-secondary:not(:checked) span {
+    color: #8BD1CF;
+}
+
+.btn-check:checked + .btn-secondary, 
+.btn-check:checked + .btn-secondary:hover {
+    background-color: #8BD1CF;
+    color: #fff; 
+    border-color: #8BD1CF;
+}
+
+.btn-check:checked + .btn-secondary span, 
+.btn-check:checked + .btn-secondary:hover span{
+    color: #fff; 
+}
+
+.btn-check:hover + .btn-secondary {
+    background-color: #8BD1CF; 
+    color: #fff;
+    border-color: #8BD1CF; 
+}
+
+.btn-check:hover + .btn-secondary span {
+    color: #fff;
+}

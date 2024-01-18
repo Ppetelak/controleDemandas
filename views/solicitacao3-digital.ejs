@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/solicitacao-digital.css">
+
+    <title>Mídia Ideal</title>
+</head>
+<body class="bodySolicitacao">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <img src="/img/botãoPrev.svg" alt="" class="mt-3">
+            </div>
+            <div class="col-8 solicitacao">
+                <div class="row">
+                    <img src="/img/midiaideal_branca.png" alt="logo branca Mídia Ideal">
+                    <div class="col-12">
+                        <form class="text-center" action="/publico" method="post">
+                                <label for="formGroupExampleInput2" class="d-block"><strong><%= (primeiraEtapa.nome) %> </strong>, qual material digital? </label>
+                                <select class="form-select mt-3" aria-label="Default select example" name="qualMaterial" id="qualMaterial">
+                                    <option selected>Selecione uma opção</option>
+                                    <option value="FEED" data-exemplo="feed">FEED</option>
+                                    <option value="STORY" data-exemplo="story">STORY</option>
+                                    <option value="REELS(VÍDEO)" data-exemplo="reels">REELS(VÍDEO)</option>
+                                    <option value="VÍDEO YOUTUBE" data-exemplo="videoYoutube">VÍDEO YOUTUBE</option>
+                                    <option value="LP'S" data-exemplo="lps">LP'S</option>
+                                    <option value="E-MAIL MARKETING" data-exemplo="emailMarketing">E-MAIL MARKETING</option>
+                                    <option value="FOTO DE PERFIL" data-exemplo="fotoPerfil">FOTO DE PERFIL</option>
+                                    <option value="CARTÃO DE VISITA VIRTUAL" data-exemplo="cartaoVisita">CARTÃO DE VISITA VIRTUAL</option>
+                                    <option value="CARTÃO CORRETOR COM OPERADORAS" data-exemplo="cartaoCorretor">CARTÃO CORRETOR COM OPERADORAS</option>
+                                    <option value="CARTÃO DE ANIVERSÁRIO" data-exemplo="cartaoAniversario">CARTÃO DE ANIVERSÁRIO</option>
+                                    <option value="CARTÃO DE BOAS VINDAS" data-exemplo="cartaoBoasVindas">CARTÃO DE BOAS VINDAS</option>
+                                </select>
+                                <button class="btn btn-primary mt-3 float-end" id="btnProximo" type="submit">Selecionar <i class="bi bi-chevron-right"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row feed">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/feedTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/feedExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row story">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/storyTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/storyExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row reels">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/reelsTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/reelsExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row videoYoutube">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/videoYoutubeTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/videoYoutubeExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row lps">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/lpsTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/lpsExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row emailMarketing">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/emailMarketingTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/emailMarketingExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row fotoPerfil">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/fotoperfilTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/fotoPerfilExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row cartaoVisita">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/cartaoVisitaTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/cartaoVirtualExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row cartaoCorretor">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/cartaoCorretorTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/cartaoCorretorExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row cartaoAniversario">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/cartaoAniversarioTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/cartaoAniversarioExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row cartaoBoasVindas">
+                    <div class="col-5 text-end">
+                        <h3 class="text-center">Exemplo:</h3>
+                        <img src="/img/cartaoBoasVindasTexto.png" class="img-fluid">
+                    </div>
+                    <div class="col-5 text-start">
+                        <img src="/img/cartaoBoasVindasExemplo.png" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Esconder todos os grupos de exemplos inicialmente
+        $('.feed, .story, .reels, .videoYoutube, .emailMarketing, .fotoPerfil, .cartaoVisita, .cartaoCorretor, .cartaoAniversario, .cartaoBoasVindas, .lps ').hide();
+
+        // Adicionar evento change no select
+        $('#qualMaterial').change(function () {
+            // Esconder todos os grupos de exemplos
+            $('.feed, .story, .reels, .videoYoutube, .emailMarketing, .fotoPerfil, .cartaoVisita, .cartaoCorretor, .cartaoAniversario, .cartaoBoasVindas, .lps ').hide();
+
+            // Obter o valor do atributo data-exemplo da opção selecionada
+            var selectedOption = $(this).find(':selected').data('exemplo');
+
+            // Mostrar o grupo de exemplos correspondente à opção selecionada
+            $('.' + selectedOption).show();
+        });
+    });
+</script>
+
+</html>

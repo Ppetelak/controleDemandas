@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/solicitacao.css">
+
+    <title>Mídia Ideal</title>
+</head>
+<body class="bodySolicitacao">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <img src="/img/botãoPrev.svg" alt="logo branca Mídia Ideal" class="mt-3">
+            </div>
+            <div class="col-8 solicitacao">
+                <img src="/img/logoMidia.png" class="img-fluid" width="30%">
+                <form class="text-center" action="/solicitacao2" method="post">
+                    <div class="form-group mt-3 publico">
+                        <label for="nome" class="d-block">Qual é o público da sua solicitação?</label>
+                        
+                        <input type="radio" class="btn-check mt-3" name="qualPublico" id="qualPublico1" autocomplete="off" value="CORRETORES (MOTIVACIONAL)">
+                        <label class="btn btn-secondary check-btn" for="qualPublico1">
+                            <strong>CORRETORES (MOTIVACIONAL)</strong> Quer motivar seu corretor a vender mais ou a começar a semana bem? Essa é a opção mais adequada para o seu objetivo.
+                        </label>
+
+                        <input type="radio" class="btn-check mt-3" name="qualPublico" id="qualPublico2" autocomplete="off" value="CORRETORES (INFORMATIVO)">
+                        <label class="btn btn-secondary" for="qualPublico2">
+                            <strong>CORRETORES (INFORMATIVO)</strong> Se você quer informar sobre campanhas, horários, feriados, regras ou outras notícias relevantes para o mercado, selecione essa opção. <BR>
+                        </label>
+
+                        <input type="radio" class="btn-check mt-3" name="qualPublico" id="qualPublico3" autocomplete="off" value="CLIENTE FINAL (VENDAS E COMERCIALIZAÇÃO)">
+                        <label class="btn btn-secondary" for="qualPublico3">
+                            <strong>CLIENTE FINAL (VENDAS E COMERCIALIZAÇÃO)</strong> 
+                            Este é o formato ideal para vender produtos para os seus clientes.
+                        </label>
+
+                        <input type="radio" class="btn-check mt-3" name="qualPublico" id="qualPublico4" autocomplete="off" value="CLIENTE FINAL (VENDAS E COMERCIALIZAÇÃO)">
+                        <label class="btn btn-secondary" for="qualPublico4">
+                            <strong>DONOS DE CORRETORAS (INFORMATIVO)</strong>
+                            Nesta opção o objetivo é enviar o material para donos de empresas parceiras.
+                        </label>
+
+                    </div>
+                    <button class="btn btn-primary mt-3 float-end" id="btnProximo" type="submit">Próximo <i class="bi bi-chevron-right"></i></button>
+                </form>
+                
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/index.js"></script>
+</html>

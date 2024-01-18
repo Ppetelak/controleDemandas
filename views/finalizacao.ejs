@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/solicitacao.css">
+
+    <title>Mídia Ideal</title>
+</head>
+<body class="bodySolicitacao finalizacao">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+            </div>
+            <div class="col-8 acompanhamento">
+                <img src="/img/logoMidiaBrancaSimbolo.png" class="img-fluid">
+                <h3>Muito obrigado,<strong> <%= (primeiraEtapa.nome) %> </strong>, nós recebemos sua solicitação! <br>
+                Em breve você poderá acompanha-lá através do código abaixo: </h3>
+                <div class="row">
+                    <div class="numeroSolicitacao" id="codigoSolicitacao">23458976</div> <button onclick="copiarCodigo()"><i class="bi bi-copy"></i> Copiar nº solicitação</button>
+                </div>
+                <span> Guarde esse número contigo que será necessário para acompanhar a solicitação e verificar seu status através do sistema de demandas.</span>
+
+                
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function copiarCodigo() {
+        // Seleciona o elemento que contém o número de solicitação
+        var codigoElement = document.getElementById('codigoSolicitacao');
+
+        // Cria um elemento de texto temporário
+        var tempInput = document.createElement('input');
+        tempInput.value = codigoElement.textContent;
+
+        // Adiciona o elemento temporário ao corpo do documento
+        document.body.appendChild(tempInput);
+
+        // Seleciona e copia o conteúdo do elemento temporário
+        tempInput.select();
+        document.execCommand('copy');
+
+        // Remove o elemento temporário
+        document.body.removeChild(tempInput);
+
+        alert('Código copiado para a área de transferência!');
+    }
+</script>
+</html>

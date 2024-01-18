@@ -69,6 +69,186 @@ app.get('/', (req,res) => {
     res.render('index');
 })
 
+app.post('/pesquisarSolicitacao', (req, res) => {
+    const numeroSolicitacao = req.body.numeroSolicitacao;
+    // Faça algo com o número da solicitação
+    // ...
+});
+
+app.get('/abrirSolicitacao', (req,res) => {
+    res.render('solicitacao1');
+})
+
+app.post('/solicitacao2', (req, res) => {
+    req.session.primeiraEtapa = req.body;
+
+    let primeiraEtapa = req.session.primeiraEtapa
+
+    console.log( {
+        "Nome do Solicitante": primeiraEtapa.nome,
+        "Telefone do Solicitante": primeiraEtapa.telefone,
+        "Empresa Solicitante": primeiraEtapa.qualEmpresa
+    })
+    res.render('solicitacao2', {primeiraEtapa: req.session.primeiraEtapa});
+})
+
+app.post('/solicitacao3', (req, res) => {
+    let primeiraEtapa  = req.session.primeiraEtapa;
+    req.session.segundaEtapa = req.body;
+
+    let segundaEtapa = req.session.segundaEtapa
+    let tipoMaterial = req.session.segundaEtapa.tipoMaterial
+
+    console.log( {
+        "Nome do Solicitante": primeiraEtapa.nome,
+        "Telefone do Solicitante": primeiraEtapa.telefone,
+        "Empresa Solicitante": primeiraEtapa.qualEmpresa,
+        "Unidade": segundaEtapa.qualUnidade,
+        "Tipo material": tipoMaterial
+    })
+
+
+    if (tipoMaterial === 'digital') {
+        res.render('solicitacao3-digital', {
+            primeiraEtapa: primeiraEtapa,
+            segundaEtapa: req.session.segundaEtapa
+        });
+    }
+    else if (tipoMaterial === 'impresso'){
+        res.render('solicitacao3-impresso', {
+            primeiraEtapa: primeiraEtapa,
+            segundaEtapa: req.session.segundaEtapa
+        });
+    }
+})
+
+app.post('/solicitacao4-impresso', (req,res) => {
+    let primeiraEtapa  = req.session.primeiraEtapa;
+    let segundaEtapa = req.session.segundaEtapa;
+
+    req.session.terceiraEtapa = req.body;
+
+    res.render('solicitacao4-impresso', {
+        primeiraEtapa : primeiraEtapa,
+        segundaEtapa : segundaEtapa,
+        terceiraEtapa: req.session.terceiraEtapa
+    })
+})
+
+app.post('/autorizacao', (req,res) => {
+    let primeiraEtapa = req.session.primeiraEtapa;
+    let segundaEtapa = req.session.segundaEtapa;
+    let terceiraEtapa = req.session.terceiraEtapa;
+
+    req.session.quartaEtapa = req.body;
+
+    let quartaEtapa = req.session.quartaEtapa;
+
+    if(quartaEtapa.quemImprimi === 'a própria unidade'){
+        res.render ('publico', {
+            primeiraEtapa: primeiraEtapa,
+            segundaEtapa: segundaEtapa,
+            terceiraEtapa: terceiraEtapa,
+            quartaEtapa: quartaEtapa
+        })
+    }
+    else if(quartaEtapa.quemImprimi === 'Mídia Ideal') {
+        res.render ('enviarAutorizacao', {
+            primeiraEtapa: primeiraEtapa,
+            segundaEtapa: segundaEtapa,
+            terceiraEtapa: terceiraEtapa,
+            quartaEtapa: quartaEtapa
+        })
+    }
+})
+
+app.post('/publico', (req,res) => {
+    let primeiraEtapa = req.session.primeiraEtapa;
+    let segundaEtapa = req.session.segundaEtapa;
+    let terceiraEtapa = req.session.terceiraEtapa;
+    let quartaEtapa = req.session.quartaEtapa;
+
+    req.session.autorizacao = req.body;
+
+    let autorizacao = req.session.autorizacao
+
+    
+    res.render('valorMaterial' , {
+        primeiraEtapa: primeiraEtapa,
+        segundaEtapa: segundaEtapa,
+        terceiraEtapa: terceiraEtapa,
+        quartaEtapa: quartaEtapa,
+        autorizacao: autorizacao
+    });
+})
+
+app.post('/temLogo', (req,res) => {
+    let primeiraEtapa = req.session.primeiraEtapa;
+    let segundaEtapa = req.session.segundaEtapa;
+    let terceiraEtapa = req.session.terceiraEtapa;
+    let quartaEtapa = req.session.quartaEtapa;
+    let autorizacao = req.session.autorizacao
+
+    req.session.valorMaterial = req.body;
+
+    res.render('temLogo', {
+        primeiraEtapa: primeiraEtapa,
+        segundaEtapa: segundaEtapa,
+        terceiraEtapa: terceiraEtapa,
+        quartaEtapa: quartaEtapa,
+        autorizacao: autorizacao,
+        valorMaterial: req.session.valorMaterial
+    })
+})
+
+app.post('/especificacoes', (req,res) => {
+    let primeiraEtapa = req.session.primeiraEtapa;
+    let segundaEtapa = req.session.segundaEtapa;
+    let terceiraEtapa = req.session.terceiraEtapa;
+    let quartaEtapa = req.session.quartaEtapa;
+    let autorizacao = req.session.autorizacao
+    let valorMaterial = req.session.valorMaterial
+
+    req.session.temLogo = req.body;
+
+    res.render('especificacoes', {
+        primeiraEtapa: primeiraEtapa,
+        segundaEtapa: segundaEtapa,
+        terceiraEtapa: terceiraEtapa,
+        quartaEtapa: quartaEtapa,
+        autorizacao: autorizacao,
+        valorMaterial: valorMaterial,
+        temLogo: req.session.temLogo
+    })
+})
+
+app.post('/finalizacao', (req, res) => {
+    let primeiraEtapa = req.session.primeiraEtapa;
+    let segundaEtapa = req.session.segundaEtapa;
+    let terceiraEtapa = req.session.terceiraEtapa;
+    let quartaEtapa = req.session.quartaEtapa;
+    let autorizacao = req.session.autorizacao
+    let valorMaterial = req.session.valorMaterial
+    let temLogo = req.session.temLogo
+
+    req.session.especificacoes = req.body;
+
+    let especificacoes = req.session.especificacoes;
+
+
+
+    res.render('finalizacao', {
+        primeiraEtapa: primeiraEtapa,
+        segundaEtapa: segundaEtapa,
+        terceiraEtapa: terceiraEtapa,
+        quartaEtapa: quartaEtapa,
+        autorizacao: autorizacao,
+        valorMaterial: valorMaterial,
+        temLogo: temLogo,
+        especificacoes: req.session.especificacoes
+    })
+})
+
 app.listen(3050, () => {
     console.log('Aplicação rodando na porta 3050');
 });
