@@ -154,3 +154,14 @@ h3 {
     margin-top: 1rem;
 }
 
+#btnFinal{
+    background: var(--blue);
+    border-color: var(--blue-200);
+}
+
+#btnFinal:hover {
+    background: var(--blue-200);
+    border-color: var(--blue);
+    color: var(--blue);
+}
+

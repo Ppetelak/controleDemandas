@@ -2,6 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/img/logo_icone.svg" type="image/png">
+    <title>Mídia Ideal - Gerenciador de Demandas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,13 +13,12 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/valorMaterial.css">
 
-    <title>Mídia Ideal</title>
 </head>
 <body class="bodySolicitacao material">
     <div class="container">
         <div class="row">
             <div class="col-2">
-                <img src="/img/botãoPrev.svg" alt="logo branca Mídia Ideal" class="mt-3">
+                <img src="/img/botãoPrev.svg" alt="logo branca Mídia Ideal" class="mt-3" onclick="voltarParaEtapaAnterior()">
             </div>
             <div class="col-8 solicitacao">
                 <img src="/img/midiaideal_logo_azul.png" class="img-fluid" width="30%">
@@ -27,13 +28,13 @@
                         <label for="nome" class="d-block">ESSE MATERIAL TERÁ LOGO?</label>
                         <span class="d-block mt-3 mb-3"> Aqui você deve selecionar todas as logos que precisam estar nesse material, sejam elas de corretora, administradora ou operadora.</span>
                         
-                        <input type="radio" class="btn-check" name="temValor" id="temValor1" autocomplete="off" value="sim">
-                        <label class="btn btn-secondary check-btn" for="temValor1">
+                        <input type="radio" class="btn-check" name="temLogo" id="temLogo1" autocomplete="off" value="sim">
+                        <label class="btn btn-secondary check-btn" for="temLogo1">
                             SIM </br>
                         </label>
 
-                        <input type="radio" class="btn-check" name="temValor" id="temValor2" autocomplete="off" value="não">
-                        <label class="btn btn-secondary" for="temValor2">
+                        <input type="radio" class="btn-check" name="temLogo" id="temLogo2" autocomplete="off" value="não">
+                        <label class="btn btn-secondary" for="temLogo2">
                             NÃO <BR>
                         </label>
                     </div>
@@ -90,11 +91,12 @@
 </body>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/index.js"></script>
 <script>
     $(document).ready(function () {
         $('#seSim, #seNao').hide();
 
-        $('input[name="temValor"]').change(function () {
+        $('input[name="temLogo"]').change(function () {
             $('#seSim, #seNao').hide();
 
             var selectedValue = $(this).val();

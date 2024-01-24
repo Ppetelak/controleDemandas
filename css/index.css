@@ -50,3 +50,10 @@
     background: var(--blue);
     border-color: var(--blue-200);
 }
+
+.areaRestrita {
+    position: fixed;
+    right: 2rem;
+    top: 2rem;
+    background: var(--orange);
+}

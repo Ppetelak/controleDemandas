@@ -4,6 +4,7 @@ const path = require('path')
 const mysql = require('mysql2')
 const session = require('express-session');
 const app = express()
+const multer = require('multer');
 const crypto = require('crypto');
 const winston = require('winston')
 const pdfGerador = require('html-pdf')
@@ -13,6 +14,7 @@ const util = require('util')
 const cookie = require('cookie-parser')
 const { url } = require('inspector')
 const ExcelJS = require('exceljs');
+const uuid = require('uuid'); 
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -65,15 +67,75 @@ const verificaAutenticacao = (req, res, next) => {
     }
 };
 
+app.post('/login-verifica', (req, res) => {
+    const { username, password } = req.body;
+    console.log(username, password)
+
+    const query = 'SELECT * FROM usuarios WHERE username = ?';
+    db.query(query, [username], (err, results) => {
+        if (err) {
+        console.error('Erro ao consultar o banco de dados:', err);
+        //return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+        return res.render('login', { error: 'Erro no servidor contate o suporte' });
+        }
+
+        if (results.length === 0) {
+        //return res.status(401).json({ error: 'Usuário não encontrado' });
+        return res.render('login', { error: 'Usuário não encontrado' });
+        }
+
+        const user = results[0];
+
+        if (user.senha !== password) {
+        //return res.status(401).json({ error: 'Senha incorreta' });
+        return res.render('login', { error: 'Senha incorreta' });
+        }
+
+        const originalUrl = req.session.originalUrl
+        req.session.usuario = user;
+        res.redirect(originalUrl);
+    });
+});
+
+app.get('/login', (req, res) => {
+    res.render('login');
+})
+
+app.get('/logout', (req, res) => {
+// Remover as informações de autenticação da sessão
+    req.session.destroy((err) => {
+        if (err) {
+        console.error('Erro ao encerrar a sessão:', err);
+        }
+        // Redirecionar o usuário para a página de login ou para outra página desejada
+        res.redirect('/');
+    });
+});
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        // Gera um nome de arquivo único usando UUID
+        const nomeArquivoUnico = `${uuid.v4()}_${file.originalname}`;
+        cb(null, nomeArquivoUnico);
+    },
+});
+const upload = multer({ storage: storage });
+
 app.get('/', (req,res) => {
     res.render('index');
 })
 
 app.post('/pesquisarSolicitacao', (req, res) => {
     const numeroSolicitacao = req.body.numeroSolicitacao;
-    // Faça algo com o número da solicitação
-    // ...
+
 });
+
+app.get('/demandas', verificaAutenticacao, (req,res) => {
+    res.render('demandas')
+})
 
 app.get('/abrirSolicitacao', (req,res) => {
     res.render('solicitacao1');
@@ -83,101 +145,149 @@ app.post('/solicitacao2', (req, res) => {
     req.session.primeiraEtapa = req.body;
 
     let primeiraEtapa = req.session.primeiraEtapa
-
-    console.log( {
-        "Nome do Solicitante": primeiraEtapa.nome,
-        "Telefone do Solicitante": primeiraEtapa.telefone,
-        "Empresa Solicitante": primeiraEtapa.qualEmpresa
-    })
     res.render('solicitacao2', {primeiraEtapa: req.session.primeiraEtapa});
 })
 
 app.post('/solicitacao3', (req, res) => {
     let primeiraEtapa  = req.session.primeiraEtapa;
+    
     req.session.segundaEtapa = req.body;
-
     let segundaEtapa = req.session.segundaEtapa
-    let tipoMaterial = req.session.segundaEtapa.tipoMaterial
 
-    console.log( {
-        "Nome do Solicitante": primeiraEtapa.nome,
-        "Telefone do Solicitante": primeiraEtapa.telefone,
-        "Empresa Solicitante": primeiraEtapa.qualEmpresa,
-        "Unidade": segundaEtapa.qualUnidade,
-        "Tipo material": tipoMaterial
-    })
-
+    let tipoMaterial = segundaEtapa.tipoMaterial
 
     if (tipoMaterial === 'digital') {
         res.render('solicitacao3-digital', {
             primeiraEtapa: primeiraEtapa,
-            segundaEtapa: req.session.segundaEtapa
+            segundaEtapa: segundaEtapa,
+            origem: 'Digital' 
         });
     }
     else if (tipoMaterial === 'impresso'){
         res.render('solicitacao3-impresso', {
             primeiraEtapa: primeiraEtapa,
-            segundaEtapa: req.session.segundaEtapa
+            segundaEtapa: segundaEtapa,
         });
     }
+})
+
+app.post('solicitacao3-digital', (req, res) => {
+    let primeiraEtapa  = req.session.primeiraEtapa;
+    let segundaEtapa = req.session.segundaEtapa;
+
+    req.session.qualMaterial = req.body;
+
+    let qualMaterial = req.session.qualMaterial
+    res.render('/publico', {
+        primeiraEtapa: primeiraEtapa,
+        segundaEtapa: segundaEtapa,
+        qualMaterial: qualMaterial,
+        origem: 'Digital'
+    })
 })
 
 app.post('/solicitacao4-impresso', (req,res) => {
     let primeiraEtapa  = req.session.primeiraEtapa;
     let segundaEtapa = req.session.segundaEtapa;
+    
+    req.session.qualMaterial = req.body;
 
-    req.session.terceiraEtapa = req.body;
+    let qualMaterial = req.session.qualMaterial;
 
     res.render('solicitacao4-impresso', {
         primeiraEtapa : primeiraEtapa,
-        segundaEtapa : segundaEtapa,
-        terceiraEtapa: req.session.terceiraEtapa
+        segundaEtapa: segundaEtapa,
+        qualMaterial: qualMaterial
     })
 })
 
 app.post('/autorizacao', (req,res) => {
-    let primeiraEtapa = req.session.primeiraEtapa;
+    let primeiraEtapa  = req.session.primeiraEtapa;
     let segundaEtapa = req.session.segundaEtapa;
-    let terceiraEtapa = req.session.terceiraEtapa;
+    let qualMaterial = req.session.qualMaterial;
 
-    req.session.quartaEtapa = req.body;
+    req.session.quemImprimi = req.body;
 
-    let quartaEtapa = req.session.quartaEtapa;
+    let quemImprimi = req.session.quemImprimi;
 
-    if(quartaEtapa.quemImprimi === 'a própria unidade'){
+    if(quemImprimi.quemImprimi === 'a própria unidade'){
         res.render ('publico', {
             primeiraEtapa: primeiraEtapa,
             segundaEtapa: segundaEtapa,
-            terceiraEtapa: terceiraEtapa,
-            quartaEtapa: quartaEtapa
+            qualMaterial: qualMaterial,
+            quemImprimi: quemImprimi,
+            origem: 'Impressão a própria unidade'
         })
     }
-    else if(quartaEtapa.quemImprimi === 'Mídia Ideal') {
+    else if(quemImprimi.quemImprimi === 'Mídia Ideal') {
         res.render ('enviarAutorizacao', {
             primeiraEtapa: primeiraEtapa,
             segundaEtapa: segundaEtapa,
-            terceiraEtapa: terceiraEtapa,
-            quartaEtapa: quartaEtapa
+            qualMaterial: qualMaterial,
+            quemImprimi: quemImprimi,
+            origem: 'Impressão Mídia Ideal'
         })
     }
 })
 
-app.post('/publico', (req,res) => {
-    let primeiraEtapa = req.session.primeiraEtapa;
+app.post('/receberAutorizacao', upload.fields([{ name: 'printAutorizacao', maxCount: 1 },]), (req, res) => {    
+    req.session.autorizacao = { printAutorizacao: req.files['printAutorizacao'][0].path };
+    let autorizacao = req.session.autorizacao;
+    let primeiraEtapa  = req.session.primeiraEtapa;
     let segundaEtapa = req.session.segundaEtapa;
-    let terceiraEtapa = req.session.terceiraEtapa;
-    let quartaEtapa = req.session.quartaEtapa;
+    let qualMaterial = req.session.qualMaterial;
+    let quemImprimi = req.session.quemImprimi;
 
-    req.session.autorizacao = req.body;
+    res.render ('publico', {
+        primeiraEtapa: primeiraEtapa,
+        segundaEtapa: segundaEtapa,
+        qualMaterial: qualMaterial,
+        quemImprimi: quemImprimi,
+        autorizacao: autorizacao,
+        origem: 'Impressão Mídia Ideal'
+    })
+})
 
-    let autorizacao = req.session.autorizacao
+app.post('/publico', (req,res) => {
+    let origem = req.body.origem;
 
-    
+    let primeiraEtapa;
+    let segundaEtapa;
+    let qualMaterial;
+    let quemImprimi;
+    let autorizacao;
+
+    if(origem === 'Impressão Mídia Ideal') { 
+        primeiraEtapa  = req.session.primeiraEtapa;
+        segundaEtapa = req.session.segundaEtapa;
+        qualMaterial = req.session.qualMaterial;
+        quemImprimi = req.session.quemImprimi;
+        autorizacao = req.session.autorizacao
+    }
+
+    else if (origem === 'Impressão a própria unidade') {
+        primeiraEtapa = req.session.primeiraEtapa;
+        segundaEtapa = req.session.segundaEtapa;
+        qualMaterial = req.session.qualMaterial;
+        
+        req.session.quemImprimi = req.body;
+
+        quemImprimi = req.session.quemImprimi;
+    }
+
+    else if (origem === 'Digital') {
+        primeiraEtapa  = req.session.primeiraEtapa;
+        segundaEtapa = req.session.segundaEtapa;
+        qualMaterial = req.session.qualMaterial;
+        quemImprimi = null;
+        autorizacao = null;
+    }
+
     res.render('valorMaterial' , {
         primeiraEtapa: primeiraEtapa,
         segundaEtapa: segundaEtapa,
-        terceiraEtapa: terceiraEtapa,
-        quartaEtapa: quartaEtapa,
+        qualMaterial: qualMaterial,
+        quemImprimi: quemImprimi,
         autorizacao: autorizacao
     });
 })
@@ -185,17 +295,17 @@ app.post('/publico', (req,res) => {
 app.post('/temLogo', (req,res) => {
     let primeiraEtapa = req.session.primeiraEtapa;
     let segundaEtapa = req.session.segundaEtapa;
-    let terceiraEtapa = req.session.terceiraEtapa;
-    let quartaEtapa = req.session.quartaEtapa;
-    let autorizacao = req.session.autorizacao
+    let qualMaterial = req.session.qualMaterial;
+    let quemImprimi = req.session.quemImprimi;
+    let autorizacao = req.session.autorizacao;
 
     req.session.valorMaterial = req.body;
 
     res.render('temLogo', {
         primeiraEtapa: primeiraEtapa,
         segundaEtapa: segundaEtapa,
-        terceiraEtapa: terceiraEtapa,
-        quartaEtapa: quartaEtapa,
+        qualMaterial: qualMaterial,
+        quemImprimi: quemImprimi,
         autorizacao: autorizacao,
         valorMaterial: req.session.valorMaterial
     })
@@ -204,48 +314,119 @@ app.post('/temLogo', (req,res) => {
 app.post('/especificacoes', (req,res) => {
     let primeiraEtapa = req.session.primeiraEtapa;
     let segundaEtapa = req.session.segundaEtapa;
-    let terceiraEtapa = req.session.terceiraEtapa;
-    let quartaEtapa = req.session.quartaEtapa;
+    let qualMaterial = req.session.qualMaterial;
+    let quemImprimi = req.session.quemImprimi;
     let autorizacao = req.session.autorizacao
     let valorMaterial = req.session.valorMaterial
 
     req.session.temLogo = req.body;
 
+    let temLogo = req.session.temLogo;
+
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+
     res.render('especificacoes', {
         primeiraEtapa: primeiraEtapa,
         segundaEtapa: segundaEtapa,
-        terceiraEtapa: terceiraEtapa,
-        quartaEtapa: quartaEtapa,
+        qualMaterial: qualMaterial,
+        quemImprimi: quemImprimi,
         autorizacao: autorizacao,
         valorMaterial: valorMaterial,
-        temLogo: req.session.temLogo
+        temLogo: temLogo
     })
 })
 
-app.post('/finalizacao', (req, res) => {
+function padZero(num) {
+    return num < 10 ? `0${num}` : num;
+}
+
+app.post('/finalizacao', upload.fields([{ name: 'referenciaAnexo', maxCount: 1 },]), (req, res) => {
+    req.session.referencia = { referenciaAnexo: req.files['referenciaAnexo'][0].path };
     let primeiraEtapa = req.session.primeiraEtapa;
     let segundaEtapa = req.session.segundaEtapa;
-    let terceiraEtapa = req.session.terceiraEtapa;
-    let quartaEtapa = req.session.quartaEtapa;
+    let qualMaterial = req.session.qualMaterial;
+    let quemImprimi = req.session.quemImprimi;
     let autorizacao = req.session.autorizacao
     let valorMaterial = req.session.valorMaterial
-    let temLogo = req.session.temLogo
+    let temLogo = req.session.temLogo;
 
     req.session.especificacoes = req.body;
 
     let especificacoes = req.session.especificacoes;
+    let referenciaAnexo = req.session.referencia;
+
+    const dataAtual = new Date();
+    const numeroSolicitacao =
+        `${dataAtual.getFullYear()}${padZero(dataAtual.getMonth() + 1)}${padZero(dataAtual.getDate())}` +
+        `${padZero(dataAtual.getHours())}${padZero(dataAtual.getMinutes())}${padZero(dataAtual.getSeconds())}`;
 
 
+    console.log( {
+        "Primeira Etapa": primeiraEtapa,
+        "Segunda Etapa": segundaEtapa,
+        "Qual material" : qualMaterial,
+        "Quem Imprime" : quemImprimi,
+        "Autorização" : autorizacao,
+        "Valor Material" : valorMaterial,
+        "Tem logo" : temLogo,
+        "Especificações" : especificacoes.maisInfos,
+        "Print Referência": referenciaAnexo
+    })
 
-    res.render('finalizacao', {
-        primeiraEtapa: primeiraEtapa,
-        segundaEtapa: segundaEtapa,
-        terceiraEtapa: terceiraEtapa,
-        quartaEtapa: quartaEtapa,
-        autorizacao: autorizacao,
-        valorMaterial: valorMaterial,
-        temLogo: temLogo,
-        especificacoes: req.session.especificacoes
+    const corretorasString = Array.isArray(temLogo.corretoras) ? temLogo.corretoras.join(', ') : temLogo.corretoras;
+    const administradorasString = Array.isArray(temLogo.administradoras) ? temLogo.administradoras.join(', ') : temLogo.administradoras;
+    const operadoraString = Array.isArray(temLogo.operadora) ? temLogo.operadora.join(', ') : temLogo.operadora;
+
+
+    const insertDemanda = `INSERT INTO demandas (
+        numeroSolicitacao,
+        nome,
+        telefone,
+        qualEmpresa,
+        qualUnidade,
+        tipoMaterial,
+        qualMaterial,
+        quemImprime,
+        autorizacao,
+        valorMaterial,
+        qualPublico,
+        temLogo,
+        corretoras,
+        administradoras,
+        operadora,
+        especificacoes,
+        referenciaAnexo
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `
+
+    db.query(insertDemanda, [
+            numeroSolicitacao, 
+            primeiraEtapa.nome, 
+            primeiraEtapa.telefone,
+            primeiraEtapa.qualEmpresa,
+            segundaEtapa.qualUnidade,
+            segundaEtapa.tipoMaterial,
+            qualMaterial.qualMaterial,
+            quemImprimi.quemImprimi,
+            autorizacao.printAutorizacao,
+            valorMaterial.infosValores,
+            'ver',
+            temLogo.temLogo,
+            temLogo.temLogo === 'sim' ? corretorasString : null,
+            temLogo.temLogo === 'sim' ? administradorasString : null,
+            temLogo.temLogo === 'sim' ? operadoraString : null,
+            especificacoes.maisInfos,
+            referenciaAnexo
+        ], (err, result) => {
+        if(err){
+            console.log(err)
+        }
+        res.render('finalizacao', {
+            nome: primeiraEtapa.nome,
+            numeroSolicitacao: numeroSolicitacao
+        })
     })
 })
 

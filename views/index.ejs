@@ -2,6 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/img/logo_icone.svg" type="image/png">
+    <title>Mídia Ideal - Gerenciador de Demandas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +15,7 @@
     <title>Mídia Ideal</title>
 </head>
 <body class="bodyIndex">
+    <a href="/demandas"><button class="btn btn-primary areaRestrita">Área Restrita</button></a>
     <div class="container">
         <div class="row">
             <div class="col-2">
@@ -72,4 +75,9 @@
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/index.js"></script>
+<script>
+    document.getElementById('btnAcompanharSolicitacao').addEventListener('click', function() {
+    document.getElementById('formSolicitacao').style.display = 'block';
+});
+</script>
 </html>

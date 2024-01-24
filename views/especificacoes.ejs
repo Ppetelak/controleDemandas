@@ -2,6 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/img/logo_icone.svg" type="image/png">
+    <title>Mídia Ideal - Gerenciador de Demandas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,23 +19,23 @@
     <div class="container">
         <div class="row">
             <div class="col-2">
-                <img src="/img/botãoPrev.svg" alt="logo branca Mídia Ideal" class="mt-3">
+                <img src="/img/botãoPrev.svg" alt="logo branca Mídia Ideal" class="mt-3" onclick="voltarParaEtapaAnterior()">
             </div>
             <div class="col-8 solicitacao">
                 <img src="/img/logoMidia.png" class="img-fluid" width="30%">
-                <h3> Olá <strong> <%= (primeiraEtapa.nome) %> </strong>, vamos continuar, </h3>
-                <form class="text-center" action="/finalizacao" method="post">
+                <h3> <strong> <%= (primeiraEtapa.nome) %> </strong>, para finalizar ... </h3>
+                <form class="text-center" action="/finalizacao" method="post" enctype="multipart/form-data" >
                     <div class="form-group mt-3 text-center">
                         <label for="formGroupExampleInput2" class="d-block">ESPECIFIQUE AS INFORMAÇÕES COMPLEMENTARES PARA FACILITAR A CRIAÇÃO DO MATERIAL. </label>
                         <span> Inclua aqui contatos, endereços, datas, chamadas específicas e/ou de exemplo, e qualquer outra informação que você deseja. </span>
-                        <textarea class="form-control" id="maisInfos" rows="4"></textarea>
+                        <textarea class="form-control" id="maisInfos" rows="4" name="maisInfos"></textarea>
                     </div>
                     <div class="mb-3 mt-3">
                         <label for="formFile" class="form-label">Anexo de referência (OPCIONAL)</label> <br>
                         <span> Você tem alguma referência que recebeu ou viu nas redes sociais para criar este material? Anexe aqui.</span>
                         <input class="form-control mt-3" type="file" id="referenciaAnexo" name="referenciaAnexo">
                     </div>
-                    <button class="btn btn-primary mt-3 float-end" id="btnProximo" type="submit">Próximo <i class="bi bi-chevron-right"></i></button>
+                    <button class="btn btn-primary mt-3 float-end finalizacaoBtn" id="btnFinal" type="submit">ENVIAR SOLICITAÇÃO <i class="bi bi-chevron-right"></i></button>
                 </form>
                 
             </div>

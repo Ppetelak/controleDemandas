@@ -1,3 +1,3 @@
-document.getElementById('btnAcompanharSolicitacao').addEventListener('click', function() {
-    document.getElementById('formSolicitacao').style.display = 'block';
-});
+function voltarParaEtapaAnterior() {
+    window.history.back(); // Isso simula o botão "Voltar" do navegador
+}

@@ -2,6 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/img/logo_icone.svg" type="image/png">
+    <title>Mídia Ideal - Gerenciador de Demandas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +22,12 @@
             </div>
             <div class="col-8 acompanhamento">
                 <img src="/img/logoMidiaBrancaSimbolo.png" class="img-fluid">
-                <h3>Muito obrigado,<strong> <%= (primeiraEtapa.nome) %> </strong>, nós recebemos sua solicitação! <br>
+                <h3>Muito obrigado,<strong> <%= nome %> </strong>, nós recebemos sua solicitação! <br>
                 Em breve você poderá acompanha-lá através do código abaixo: </h3>
                 <div class="row">
-                    <div class="numeroSolicitacao" id="codigoSolicitacao">23458976</div> <button onclick="copiarCodigo()"><i class="bi bi-copy"></i> Copiar nº solicitação</button>
+                    <div class="numeroSolicitacao" id="codigoSolicitacao"><%= numeroSolicitacao %></div> <button onclick="copiarCodigo()"><i class="bi bi-copy"></i> Copiar nº solicitação</button>
                 </div>
                 <span> Guarde esse número contigo que será necessário para acompanhar a solicitação e verificar seu status através do sistema de demandas.</span>
-
-                
             </div>
         </div>
     </div>
