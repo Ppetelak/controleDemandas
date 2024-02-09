@@ -53,14 +53,18 @@
                         </button>
                     </div>
                     <div id="formSolicitacao" class="mt-3" style="display:none;">
-                        <p> Digite o número da solicitação e clique em verificar, para verificar o status </p>
-                        <form action="/pesquisarSolicitacao" method="post" class="form-inline justify-content-center">
-                            <div class="form-group mb-2">
-                                <input type="text" class="form-control" name="numeroSolicitacao" placeholder="Número da Solicitação">
+                        <p> Digite o número da solicitação e clique em verificar para verificar o status </p>
+                        <form action="/pesquisarSolicitacao" method="post" class="row justify-content-start">
+                            <div class="col-auto">
+                                <div class="form-group mb-2">
+                                    <input type="text" class="form-control" name="numeroSolicitacao" placeholder="Número da Solicitação">
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary mb-2 ml-2">Verificar</button>
+                            <div class="col-auto">
+                                <button id="verificarSolicitacao" type="submit" class="btn btn-primary mb-2">Verificar</button>
+                            </div>
                         </form>
-                    </div>
+                    </div>                                  
                 </div>
                 <p>
                     Um briefing feito corretamente evita alterações e ajuda na agilidade do processo. Agradecemos a compreensão

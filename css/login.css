@@ -2,6 +2,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
     background-color: var(--blue);
     background-image: url(../img/fundosessaofinal.png);
     background-repeat: no-repeat;
@@ -33,10 +34,4 @@ body {
 .containerLogin button:hover{
     background: var(--orange-100);
     border-color: var(--orange);
-}
-
-@media (min-width: 768px) {
-    body {
-        padding-top: 70px;
-    }
 }

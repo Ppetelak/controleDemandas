@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <link rel="shortcut icon" href="/img/logo_icone.svg" type="image/png">
+        <title>Solicitação - <%= demanda.numeroSolicitacao %></title>
+        <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="/css/dashboard.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+      </head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="/img/logoMidiaBrancaSimbolo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
+            </a>
+
+            <!-- Botão hamburguer para dispositivos móveis -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Menu central -->
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/demandas">Demandas</a>
+                    </li>
+                    <!-- Adicione mais itens de menu conforme necessário -->
+                </ul>
+            </div>
+
+            <!-- Nome do usuário e opção de sair -->
+            <div class="navbar-text">
+                <span class="me-2">Nome do Usuário</span>
+                <a href="/logout" class="btn btn-outline-light">Sair</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Seu conteúdo da dashboard aqui -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col col-md-4">
+                <h4 class="mb-4 text-center"> Solicitação nº <%= demanda.numeroSolicitacao %></h4>
+            </div>
+            <div class="col-md-4">
+                <p> 
+                    <strong>Status:</strong>
+                    <%= demanda.ultimoStatus %>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary"> Mudar Status </button>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title">Informações de localização e contato</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                  <p><strong>Nome Solicitante:</strong>
+                    <%= demanda.nome %>
+                  </p>
+                  <p><strong>Telefone:</strong>
+                    <%= demanda.telefone %>
+                  </p>
+                    </div>
+                    <div class="col-md-6">
+                    <p><strong>Empresa Solicitante:</strong>
+                        <%= demanda.qualEmpresa %>
+                    </p>
+                    <p><strong>Cidade/ Unidade:</strong>
+                        <%= demanda.qualUnidade %>
+                    </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title">Sobre material</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Tipo de Material:</strong>
+                        <%= demanda.tipoMaterial %>
+                        </p>
+                        <p><strong>Qual Material:</strong>
+                        <%= demanda.qualMaterial %>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Qual Público do Material:</strong>
+                            <%= demanda.qualPublico %>
+                        </p>
+                        <p><strong>Logos</strong><br>
+                            Corretora(s): <%= demanda.corretoras %> <br>
+                            Administradora(s): <%= demanda.administradoras %> <br>
+                            Operadora(s): <%= demanda.operadora %>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <p> <strong> Informações de valor no material: </strong> <br>
+                        <%= demanda.valorMaterial %>
+                    </p>
+                    <p> <strong> Especificações do material: </strong> <br>
+                        <%= demanda.especificacoes %>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title">Anexos</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Referência:</strong> <br>
+                            <% if (demanda.referenciaAnexo) { %>
+                                <img src="/<%= demanda.referenciaAnexo %>">
+                            <% } else { %>
+                                Imagem não anexada.
+                            <% } %>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Autorização:</strong> <br>
+                            <% if (demanda.autorizacao) { %>
+                                <img src="/<%= demanda.autorizacao %>">
+                            <% } else { %>
+                                Imagem não anexada.
+                            <% } %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h4 class="text-center"> Atualizações de Status </h4>
+
+        <table class="table">
+            <thead>
+                <% if(statusDemanda.length > 0) { %>
+                <tr>
+                    <th scope="col">Data</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <% statusDemanda.forEach(function(status) { %>
+                        <tr>
+                            <td><%= status.dataRegistro.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %></td>
+                            <td><%= status.statusDemanda %></td>
+                        </tr>
+                   <% }); %>
+                <% } else { %>
+                    <p> Sem status no sistema </P>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script src="/js/demandas.js"></script>
+</html>

@@ -5,11 +5,12 @@
   <link rel="shortcut icon" href="/img/logo_icone.svg" type="image/png">
   <title>Mídia Ideal - Gerenciador de Demandas</title>
   <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/login.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -25,7 +26,7 @@
         <label for="password">Senha:</label>
         <input type="password" class="form-control" id="password" placeholder="Digite sua senha" name="password">
       </div>
-      <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+      <button type="submit" class="btn btn-primary btn-block mt-3">Entrar</button>
       <% if (typeof error !== 'undefined' && error) { %>
         <div class="alert alert-danger" role="alert">
           <%= error %>

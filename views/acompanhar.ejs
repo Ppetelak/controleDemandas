@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/img/logo_icone.svg" type="image/png">
+    <title>Acompanhar demanda - Mídia Ideal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/solicitacao.css">
+
+    <title>Mídia Ideal</title>
+</head>
+<body class="bodySolicitacao">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <img src="/img/botãoPrev.svg" alt="logo branca Mídia Ideal" class="mt-3" onclick="voltarParaEtapaAnterior()">
+            </div>
+            <div class="col-8 solicitacao">
+                <img src="/img/logoMidia.png" class="img-fluid" width="30%">
+                <div class="numeroSolicitacao">Nº <%= numeroSolicitacao %></div>
+                <div class="previsaoEntrega"> Data previsão entrega: 12/12/12 </div>
+                <div class="status-bar">
+                    <% if(status === 'RECUSADA') { %>
+                            <div class="status-column">
+                                <i class="bi bi-envelope-arrow-down ativo"></i>
+                                <span> Solicitação <br> recebida</span>
+                            </div>
+                            <div class="status-column">
+                                <i class="bi bi-x-lg naoAceita"></i>
+                                <span> Solicitação <br> não aceita</span>
+                            </div>
+                            <div class="status-column">
+                                <i class="bi bi-hand-thumbs-up"></i>
+                                <span> Solicitação <br> aceita</span>
+                            </div>
+                            <div class="status-column">
+                                <i class="bi bi-kanban"></i>
+                                <span> Em produção </span>
+                            </div>
+                            <div class="status-column">
+                                <i class="bi bi-clock-history"></i>
+                                <span> Aguardando <br> aprovação </span>
+                            </div>
+                            <div class="status-column">
+                                <i class="bi bi-check-lg"></i>
+                                <span> Aprovado </span>
+                            </div>
+                            <div class="status-column">
+                                <i class="bi bi-envelope-check"></i>
+                                <span> Entregue </span>
+                            </div>
+                        </div>
+                        <div class="motivoRecusa">
+                            <p><strong>Motivo da Recusa: </strong>  is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                        </div> 
+                    <% } %>
+                    <% if(status === 'ENVIADA') { %>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-arrow-down ativo"></i>
+                            <span> Solicitação <br> recebida</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-hand-thumbs-up"></i>
+                            <span> Solicitação <br> aceita</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-kanban"></i>
+                            <span> Em produção </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-clock-history"></i>
+                            <span> Aguardando <br> aprovação </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-check-lg"></i>
+                            <span> Aprovado </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-check"></i>
+                            <span> Entregue </span>
+                        </div>
+                    <% } %>
+                    <% if(status === 'RECEBIDA') { %>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-arrow-down ativo"></i>
+                            <span> Solicitação <br> recebida</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-hand-thumbs-up ativo"></i>
+                            <span> Solicitação <br> aceita</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-kanban"></i>
+                            <span> Em produção </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-clock-history"></i>
+                            <span> Aguardando <br> aprovação </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-check-lg"></i>
+                            <span> Aprovado </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-check"></i>
+                            <span> Entregue </span>
+                        </div>
+                    <% } %>
+                    <% if(status === 'PRODUÇÃO') { %>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-arrow-down ativo"></i>
+                            <span> Solicitação <br> recebida</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-hand-thumbs-up ativo"></i>
+                            <span> Solicitação <br> aceita</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-kanban ativo"></i>
+                            <span> Em produção </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-clock-history"></i>
+                            <span> Aguardando <br> aprovação </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-check-lg"></i>
+                            <span> Aprovado </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-check"></i>
+                            <span> Entregue </span>
+                        </div>
+                    <% } %>
+                    <% if(status === 'APROVAÇÃO') { %>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-arrow-down ativo"></i>
+                            <span> Solicitação <br> recebida</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-hand-thumbs-up ativo"></i>
+                            <span> Solicitação <br> aceita</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-kanban ativo"></i>
+                            <span> Em produção </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-clock-history ativo"></i>
+                            <span> Aguardando <br> aprovação </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-check-lg"></i>
+                            <span> Aprovado </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-check"></i>
+                            <span> Entregue </span>
+                        </div>
+                    <% } %>
+                    <% if(status === 'APROVADA') { %>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-arrow-down ativo"></i>
+                            <span> Solicitação <br> recebida</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-hand-thumbs-up ativo"></i>
+                            <span> Solicitação <br> aceita</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-kanban ativo"></i>
+                            <span> Em produção </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-clock-history ativo"></i>
+                            <span> Aguardando <br> aprovação </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-check-lg ativo"></i>
+                            <span> Aprovado </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-check"></i>
+                            <span> Entregue </span>
+                        </div>
+                    <% } %>
+                    <% if(status === 'ENTREGUE') { %>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-arrow-down ativo"></i>
+                            <span> Solicitação <br> recebida</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-hand-thumbs-up ativo"></i>
+                            <span> Solicitação <br> aceita</span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-kanban ativo"></i>
+                            <span> Em produção </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-clock-history ativo"></i>
+                            <span> Aguardando <br> aprovação </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-check-lg ativo"></i>
+                            <span> Aprovado </span>
+                        </div>
+                        <div class="status-column">
+                            <i class="bi bi-envelope-check ativo"></i>
+                            <span> Entregue </span>
+                        </div>
+                    <% } %>
+                </div>     
+            </div>
+            <div class="col-8">
+                
+            </div>
+        </div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/index.js"></script>
+</html>
