@@ -1,7 +1,8 @@
+const db = require('./database')
 const express = require('express')
 const ejs = require('ejs')
 const path = require('path')
-const mysql = require('mysql2')
+//const mysql = require('mysql2')
 const session = require('express-session');
 const app = express()
 const multer = require('multer');
@@ -40,22 +41,6 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
-
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'pmp078917',
-    database: 'demandas',
-    port: '3306'
-});
-
-db.connect((error) => {
-    if (error) {
-        console.error('Erro ao conectar ao banco de dados:', error);
-    } else {
-        console.log('Conexão bem-sucedida ao banco de dados');
-    }
-});
 
 const verificaAutenticacao = (req, res, next) => {
     if (req.session && req.session.usuario) {
