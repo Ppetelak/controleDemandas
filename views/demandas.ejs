@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
         <link rel="stylesheet" href="/css/dashboard.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,43 +15,71 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <!-- Logo -->
-            <a class="navbar-brand" href="#">
-                <img src="/img/logoMidiaBrancaSimbolo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
-            </a>
-
-            <!-- Botão hamburguer para dispositivos móveis -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Menu central -->
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Demandas</a>
-                    </li>
-                    <!-- Adicione mais itens de menu conforme necessário -->
-                </ul>
-            </div>
-
-            <!-- Nome do usuário e opção de sair -->
-            <div class="navbar-text">
-                <span class="me-2">Nome do Usuário</span>
-                <a href="#" class="btn btn-outline-light">Sair</a>
-            </div>
-        </div>
-    </nav>
+    <%- include('navbar') %>
 
     <!-- Seu conteúdo da dashboard aqui -->
     <div class="container mt-5">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Digite o número para pesquisar" aria-label="Pesquisar"
-                aria-describedby="button-addon2">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Pesquisar</button>
+        <div class="row">
+            <h6>Legenda: </h6>
+            <div class="status-bar">
+                <div class="status-column">
+                    <i class="bi bi-envelope-arrow-down ativo"></i>
+                    <span> Solicitação <br> recebida</span><br>
+                    <strong>ENVIADA</strong>
+                </div>
+                <div class="status-column">
+                    <i class="bi bi-x-lg naoAceita"></i>
+                    <span> Solicitação <br> não aceita</span><br>
+                    <strong>RECUSADA</strong>
+                </div>
+                <div class="status-column">
+                    <i class="bi bi-hand-thumbs-up"></i>
+                    <span> Solicitação <br> aceita</span><br>
+                    <strong>RECEBIDA</strong>
+                </div>
+                <div class="status-column">
+                    <i class="bi bi-kanban"></i>
+                    <span> Em <BR>produção </span><br>
+                    <strong>PRODUÇÃO</strong>
+                </div>
+                <div class="status-column">
+                    <i class="bi bi-clock-history"></i>
+                    <span> Aguardando <br> aprovação </span>
+                    <br>
+                    <strong>APROVAÇÃO</strong>
+                </div>
+                <div class="status-column">
+                    <i class="bi bi-check-lg"></i>
+                    <span> Aprovado </span><br><br>
+                    <strong>APROVADA</strong>
+                </div>
+                <div class="status-column">
+                    <i class="bi bi-envelope-check"></i>
+                    <span> Entregue </span><br><br>
+                    <strong>ENTREGUE</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-6">
+                <div class="input-group mb-3">
+                    <input type="text" id="searchDemanda" class="form-control" placeholder="Digite o número para pesquisar" aria-label="Pesquisar"
+                        aria-describedby="button-addon2">
+                </div>
+            </div>
+            <div class="col-6">
+                <select id="statusFilter" class="form-select">
+                    <option disabled selected>Filtre por status</option>
+                    <option value="">Todos</option>
+                    <option value="RECUSADA">RECUSADA</option>
+                    <option value="RECEBIDA">RECEBIDA</option>
+                    <option value="PRODUÇÃO">PRODUÇÃO</option>
+                    <option value="APROVAÇÃO">APROVAÇÃO</option>
+                    <option value="APROVADA">APROVADA</option>
+                    <option value="ENTREGUE">ENTREGUE</option>
+                    <!-- Adicione mais opções conforme necessário -->
+                </select>
+            </div>
         </div>
 
 
@@ -61,7 +90,7 @@
                 <tr>
                     <th scope="col">Número Solicitação</th>
                     <th scope="col">Empresa</th>
-                    <th scope="col">Data Abertura</th>
+                    <th scope="col">Data Abertura</i></th>
                     <th scope="col">Status</th>
                     <th scope="col">Ações</th>
                 </tr>
@@ -69,9 +98,9 @@
             <tbody>
                     <% demandas.forEach(function(demanda) { %>
                         <tr>
-                            <th scope="row"><%= demanda.numeroSolicitacao %></th>
+                            <th scope="row" class="numeroDemanda" data-numero="<%= demanda.numeroSolicitacao %>"><%= demanda.numeroSolicitacao %></th>
                             <td><%= demanda.qualEmpresa %></td>
-                            <td><%= demanda.dataAbertura.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %></td>
+                            <td><%= demanda.dataAbertura.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
                             <td class="status-cell"><%= demanda.ultimoStatus %></td>
                             <td>
                                 <button class="btn btn-primary editar-status-button" data-numeroSolicitacao="<%= demanda.numeroSolicitacao %>">Editar Status</button>
@@ -88,33 +117,73 @@
     <!-- Definição do modal -->
     <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Editar Status - Solicitação Nº <span id="numeroSolicitacaoTitulo"></span></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="numeroSolicitacaoInput">
-                <label for="statusSelect">Selecione o novo status:</label>
-                <select id="statusSelect" class="form-select">
-                    <option value="ENVIADA">ENVIADA</option>
-                    <option value="RECUSADA">RECUSADA</option>
-                    <option value="RECEBIDA">RECEBIDA</option>
-                    <option value="PRODUCAO">PRODUÇÃO</option>
-                    <option value="APROVAÇÃO">APROVAÇÃO</option>
-                    <option value="APROVADA">APROVADA</option>
-                    <option value="ENTREGUE">ENTREGUE</option>
-                    <!-- Adicione outras opções de status conforme necessário -->
-                </select>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-primary" onclick="salvarNovoStatus()">Salvar</button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Status - Solicitação Nº <span id="numeroSolicitacaoTitulo"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="numeroSolicitacaoInput">
+                    <label for="statusSelect">Selecione o novo status:</label>
+                    <select id="statusSelect" class="form-select">
+                        <option disabled selected>Selecione o novo status</option>
+                        <option value="RECUSADA">RECUSADA</option>
+                        <option value="RECEBIDA">RECEBIDA</option>
+                        <option value="PRODUÇÃO">PRODUÇÃO</option>
+                        <option value="APROVAÇÃO">APROVAÇÃO</option>
+                        <option value="APROVADA">APROVADA</option>
+                        <option value="ENTREGUE">ENTREGUE</option>
+                    </select>
+                    <div id="dataEntregaInput" style="display: none;">
+                        <label for="dataEntrega">Data de Previsão de Entrega:</label>
+                        <input type="date" id="dataEntrega" class="form-control">
+                    </div>
+                    <div id="motivoRecusaInput" style="display: none;">
+                        <label for="motivoRecusa">Motivo da Recusa:</label>
+                        <textarea id="motivoRecusa" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="salvarNovoStatus()">Salvar</button>
+                </div>
             </div>
         </div>
-        </div>
+    </div>
+    <div class="mensagem">
     </div>
 
 </body>
+<script>
+    $(document).ready(function () {
+        $("#searchDemanda").on("input", function () {
+            var searchText = $(this).val().trim().toLowerCase();
+
+            $("tbody tr").each(function () {
+                var nDemanda = $(this).find(".numeroDemanda").text().trim().toLowerCase();
+
+                // Verifica se o texto digitado corresponde ao número de implantação ou ao CPF
+                if (nDemanda.includes(searchText)) {
+                    $(this).removeClass("d-none"); 
+                } else {
+                    $(this).addClass("d-none"); 
+                }
+            });
+        });
+        $("#statusFilter").on("change", function () {
+        var selectedStatus = $(this).val();
+
+            $("tbody tr").each(function () {
+                var rowStatus = $(this).find(".status-cell").text().trim();
+
+                if (selectedStatus === "" || rowStatus === selectedStatus) {
+                    $(this).removeClass("d-none");
+                } else {
+                    $(this).addClass("d-none");
+                }
+            });
+        });
+    });
+</script>
 <script src="/js/demandas.js"></script>
 </html>

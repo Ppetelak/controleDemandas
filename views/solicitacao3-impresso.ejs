@@ -28,8 +28,8 @@
                     <div class="col-12">
                         <form class="text-center" action="/solicitacao4-impresso" method="post">
                                 <label for="formGroupExampleInput2" class="d-block"><strong><%= (primeiraEtapa.nome) %> </strong>, qual material impresso? </label>
-                                <select class="form-select mt-3" aria-label="Default select example" name="qualMaterial" id="qualMaterial">
-                                    <option selected>Selecione uma opção</option>
+                                <select class="form-select mt-3" aria-label="Default select example" name="qualMaterial" id="qualMaterial" required>
+                                    <option selected disabled value="">Selecione uma opção</option>
                                     <option value="PDV - Ponto de Venda" data-exemplo="pdv">PDV - Ponto de Venda</option>
                                     <option value="FLYER" data-exemplo="flyer">FLYER</option>
                                     <option value="FOLDER" data-exemplo="folder">FOLDER</option>

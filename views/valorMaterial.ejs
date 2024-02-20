@@ -28,7 +28,7 @@
                         <span class="d-block mt-3 mb-3"> <strong>Por exemplo: </strong><br>
                             a partir de R$119,90, com 10% de desconto, ou para campanhas com valor ou porcentagem de premiação.</span>
                         
-                        <input type="radio" class="btn-check" name="temValor" id="temValor1" autocomplete="off" value="sim">
+                        <input type="radio" class="btn-check" name="temValor" id="temValor1" autocomplete="off" value="sim" required>
                         <label class="btn btn-secondary check-btn" for="temValor1">
                             SIM </br>
                         </label>
@@ -70,8 +70,10 @@
 
             if (selectedValue === 'sim') {
                 $('#seSim').show();
+                $('#infosValores').prop('required', true);
             } else if (selectedValue === 'não') {
                 $('#seNao').show();
+                $('#infosValores').prop('required', false);
             }
         });
     });

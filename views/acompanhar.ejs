@@ -24,7 +24,9 @@
             <div class="col-8 solicitacao">
                 <img src="/img/logoMidia.png" class="img-fluid" width="30%">
                 <div class="numeroSolicitacao">Nº <%= numeroSolicitacao %></div>
-                <div class="previsaoEntrega"> Data previsão entrega: 12/12/12 </div>
+                <% if(dataEntrega) { %>
+                    <div class="previsaoEntrega">Data prevista para entrega: <strong><%= dataEntrega %> </strong> </div>
+                <% } %>
                 <div class="status-bar">
                     <% if(status === 'RECUSADA') { %>
                             <div class="status-column">
@@ -57,7 +59,7 @@
                             </div>
                         </div>
                         <div class="motivoRecusa">
-                            <p><strong>Motivo da Recusa: </strong>  is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                            <p><strong>Motivo da Recusa: </strong>  <%= motivoRecusa %> </p>
                         </div> 
                     <% } %>
                     <% if(status === 'ENVIADA') { %>

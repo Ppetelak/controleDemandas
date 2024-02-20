@@ -5,58 +5,39 @@
         <title>Solicitação - <%= demanda.numeroSolicitacao %></title>
         <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <link rel="stylesheet" href="/css/dashboard.css">
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
       </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <!-- Logo -->
-            <a class="navbar-brand" href="#">
-                <img src="/img/logoMidiaBrancaSimbolo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
-            </a>
-
-            <!-- Botão hamburguer para dispositivos móveis -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Menu central -->
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/demandas">Demandas</a>
-                    </li>
-                    <!-- Adicione mais itens de menu conforme necessário -->
-                </ul>
-            </div>
-
-            <!-- Nome do usuário e opção de sair -->
-            <div class="navbar-text">
-                <span class="me-2">Nome do Usuário</span>
-                <a href="/logout" class="btn btn-outline-light">Sair</a>
-            </div>
-        </div>
-    </nav>
+    <%- include('navbar') %>
 
     <!-- Seu conteúdo da dashboard aqui -->
     <div class="container mt-5">
         <div class="row">
-            <div class="col col-md-4">
-                <h4 class="mb-4 text-center"> Solicitação nº <%= demanda.numeroSolicitacao %></h4>
-            </div>
-            <div class="col-md-4">
-                <p> 
-                    <strong>Status:</strong>
-                    <%= demanda.ultimoStatus %>
-                </p>
-            </div>
-            <div class="col-md-4">
-                <button class="btn btn-primary"> Mudar Status </button>
-            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Número Solicitação</th>
+                        <th scope="col">Data Abertura</i></th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Alterar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                            <tr>
+                                <th scope="row" class="numeroDemanda" data-numero="<%= demanda.numeroSolicitacao %>"><%= demanda.numeroSolicitacao %></th>
+                                <td><%= demanda.dataAbertura.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
+                                <td class="status-cell"><%= demanda.ultimoStatus %></td>
+                                <td> 
+                                    <button class="btn btn-primary editar-status-button" data-numeroSolicitacao="<%= demanda.numeroSolicitacao %>">Editar Status</button>
+                                </td>
+                            </tr>
+                </tbody>
+            </table>
         </div>
         <div class="card mb-4">
             <div class="card-header">
@@ -120,36 +101,44 @@
             </div>
         </div>
 
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="card-title">Anexos</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Referência:</strong> <br>
-                            <% if (demanda.referenciaAnexo) { %>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Referência:</strong> <br>
+                        <% function isImage(filename) { %>
+                        <%    var ext = filename.split('.').pop().toLowerCase(); %>
+                        <%    return ext === 'jpg' || ext === 'jpeg' || ext === 'png' || ext === 'gif' || ext === 'bmp'; %>
+                        <% } %>
+                        <% if (demanda.referenciaAnexo) { %>
+                            <% if (isImage(demanda.referenciaAnexo)) { %>
                                 <img src="/<%= demanda.referenciaAnexo %>">
                             <% } else { %>
-                                Imagem não anexada.
+                                <a href="/<%= demanda.referenciaAnexo %>" target="_blank">Visualizar PDF</a>
                             <% } %>
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Autorização:</strong> <br>
-                            <% if (demanda.autorizacao) { %>
+                        <% } else { %>
+                            Imagem não anexada.
+                        <% } %>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Autorização:</strong> <br>
+                        <% if (demanda.autorizacao) { %>
+                            <% if (isImage(demanda.autorizacao)) { %>
                                 <img src="/<%= demanda.autorizacao %>">
                             <% } else { %>
-                                Imagem não anexada.
+                                <a href="/<%= demanda.autorizacao %>" target="_blank">Visualizar PDF</a>
                             <% } %>
-                        </p>
-                    </div>
+                        <% } else { %>
+                            Imagem não anexada.
+                        <% } %>
+                    </p>
                 </div>
             </div>
         </div>
+        
         <h4 class="text-center"> Atualizações de Status </h4>
 
-        <table class="table">
+        <table class="table" id="tabelaStatus">
             <thead>
                 <% if(statusDemanda.length > 0) { %>
                 <tr>
@@ -160,7 +149,7 @@
             <tbody>
                     <% statusDemanda.forEach(function(status) { %>
                         <tr>
-                            <td><%= status.dataRegistro.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %></td>
+                            <td><%= status.dataRegistro.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
                             <td><%= status.statusDemanda %></td>
                         </tr>
                    <% }); %>
@@ -169,6 +158,43 @@
                 <% } %>
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Status - Solicitação Nº <span id="numeroSolicitacaoTitulo"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="numeroSolicitacaoInput">
+                    <label for="statusSelect">Selecione o novo status:</label>
+                    <select id="statusSelect" class="form-select">
+                        <option disabled selected>Selecione o novo status</option>
+                        <option value="RECUSADA">RECUSADA</option>
+                        <option value="RECEBIDA">RECEBIDA</option>
+                        <option value="PRODUÇÃO">PRODUÇÃO</option>
+                        <option value="APROVAÇÃO">APROVAÇÃO</option>
+                        <option value="APROVADA">APROVADA</option>
+                        <option value="ENTREGUE">ENTREGUE</option>
+                    </select>
+                    <div id="dataEntregaInput" style="display: none;">
+                        <label for="dataEntrega">Data de Previsão de Entrega:</label>
+                        <input type="date" id="dataEntrega" class="form-control">
+                    </div>
+                    <div id="motivoRecusaInput" style="display: none;">
+                        <label for="motivoRecusa">Motivo da Recusa:</label>
+                        <textarea id="motivoRecusa" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="salvarNovoStatus()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mensagem">
     </div>
 </body>
 <script src="/js/demandas.js"></script>

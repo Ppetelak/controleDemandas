@@ -29,8 +29,8 @@
                         <form class="text-center" action="/solicitacao3-digital" method="post">
                             <input type="hidden" name="origem" value="<%= origem %>">
                                 <label for="formGroupExampleInput2" class="d-block"><strong><%= (primeiraEtapa.nome) %> </strong>, qual material digital? </label>
-                                <select class="form-select mt-3" aria-label="Default select example" name="qualMaterial" id="qualMaterial">
-                                    <option selected>Selecione uma opção</option>
+                                <select class="form-select mt-3" aria-label="Default select example" name="qualMaterial" id="qualMaterial" required>
+                                    <option selected disabled value="">Selecione uma opção</option>
                                     <option value="FEED" data-exemplo="feed">FEED</option>
                                     <option value="STORY" data-exemplo="story">STORY</option>
                                     <option value="REELS(VÍDEO)" data-exemplo="reels">REELS(VÍDEO)</option>

@@ -25,3 +25,10 @@ CREATE TABLE statusDemandas (
     statusDemanda VARCHAR(50),
     dataRegistro DATE
 );
+
+CREATE TABLE usuarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50),
+    senha VARCHAR(50),
+    nome VARCHAR(250)
+)
