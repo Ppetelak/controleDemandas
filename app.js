@@ -142,7 +142,7 @@ app.post('/pesquisarSolicitacao', (req, res) => {
         FROM 
             demandas d
         LEFT JOIN 
-            statusDemandas sd ON d.numeroSolicitacao = sd.numeroSolicitacao
+            statusdemandas sd ON d.numeroSolicitacao = sd.numeroSolicitacao
         WHERE 
             d.numeroSolicitacao = ?
         ORDER BY 
@@ -193,13 +193,13 @@ app.get('/demandas', verificaAutenticacao, (req,res) => {
     FROM 
         demandas d
     LEFT JOIN 
-        statusDemandas sd ON d.numeroSolicitacao = sd.numeroSolicitacao
+        statusdemandas sd ON d.numeroSolicitacao = sd.numeroSolicitacao
     LEFT JOIN 
-        statusDemandas sdEnv ON d.numeroSolicitacao = sdEnv.numeroSolicitacao
+        statusdemandas sdEnv ON d.numeroSolicitacao = sdEnv.numeroSolicitacao
     WHERE 
         sd.id = (
             SELECT MAX(id) 
-            FROM statusDemandas 
+            FROM statusdemandas 
             WHERE numeroSolicitacao = d.numeroSolicitacao
         )
     AND sdEnv.statusDemanda = 'ENVIADA';
@@ -225,21 +225,21 @@ app.get('/demanda/:id', verificaAutenticacao, (req,res) => {
     FROM 
         demandas d
     LEFT JOIN 
-        statusDemandas sd ON d.numeroSolicitacao = sd.numeroSolicitacao
+        statusdemandas sd ON d.numeroSolicitacao = sd.numeroSolicitacao
     LEFT JOIN 
-        statusDemandas sdEnv ON d.numeroSolicitacao = sdEnv.numeroSolicitacao
+        statusdemandas sdEnv ON d.numeroSolicitacao = sdEnv.numeroSolicitacao
     WHERE 
         d.numeroSolicitacao = ? AND
         sd.id = (
             SELECT id
-            FROM statusDemandas 
+            FROM statusdemandas 
             WHERE numeroSolicitacao = d.numeroSolicitacao
             ORDER BY id DESC
             LIMIT 1
         )
     AND sdEnv.statusDemanda = 'ENVIADA';
     `;
-    const selectStatusDemanda = `SELECT * FROM statusDemandas WHERE numeroSolicitacao=?`
+    const selectStatusDemanda = `SELECT * FROM statusdemandas WHERE numeroSolicitacao=?`
 
     db.query(selectDemanda, [numeroSolicitacao], (err, result) => {
         if(err) {
@@ -274,7 +274,7 @@ app.post('/mudarStatus/:id', verificaAutenticacao, (req, res) => {
 
     const dataAtualSplit = new Date().toISOString().split('T')[0];
 
-    const updateStatus = 'INSERT INTO statusDemandas (numeroSolicitacao, statusDemanda, dataRegistro) VALUES (?, ?, ?)';
+    const updateStatus = 'INSERT INTO statusdemandas (numeroSolicitacao, statusDemanda, dataRegistro) VALUES (?, ?, ?)';
 
     db.query(updateStatus, [numeroSolicitacao, novoStatus, dataAtualSplit], (err, result) => {
         if (err) {
@@ -609,7 +609,7 @@ app.post('/finalizacao', upload.fields([{ name: 'referenciaAnexo', maxCount: 1 }
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `
 
-    const insertStatusDemandas = `INSERT INTO statusdemandas (
+    const insertstatusdemandas = `INSERT INTO statusdemandas (
         numeroSolicitacao,
         statusDemanda,
         dataRegistro
@@ -649,7 +649,7 @@ app.post('/finalizacao', upload.fields([{ name: 'referenciaAnexo', maxCount: 1 }
             statusDemanda: statusDemanda,
             dataatual: dataAtualSplit
         })
-        db.query(insertStatusDemandas, [numeroSolicitacao, statusDemanda , dataAtualSplit], (err, result) => {
+        db.query(insertstatusdemandas, [numeroSolicitacao, statusDemanda , dataAtualSplit], (err, result) => {
             if(err) {
                 console.error('Erro ao inserir status ao BD', err);
                 logger.error({
