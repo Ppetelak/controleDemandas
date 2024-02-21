@@ -136,7 +136,7 @@ app.post('/pesquisarSolicitacao', (req, res) => {
 
     const query = `
         SELECT 
-            sd.statusDemanda AS ultimoStatus,
+            sd.statusdemanda AS ultimoStatus,
             d.motivoRecusa,
             DATE_FORMAT(d.dataEntrega, '%d/%m/%Y') AS dataEntrega
         FROM 
@@ -163,22 +163,20 @@ app.post('/pesquisarSolicitacao', (req, res) => {
         }
 
         if (result.length === 0) {
-            // Não foi encontrado nenhum registro para o número de solicitação especificado
-            return res.status(404).send('Nenhum registro encontrado para o número de solicitação especificado');
+            res.render('naolocalizado')
+        } else {
+            const status = result[0].ultimoStatus;
+            const motivoRecusa = result[0].motivoRecusa;
+            const dataEntrega = result[0].dataEntrega;
+            
+            // Renderize a página com as informações
+            res.render('acompanhar', { 
+                numeroSolicitacao, 
+                status,
+                motivoRecusa,
+                dataEntrega
+            });
         }
-
-        // O resultado contém o último status, motivo de recusa e data de entrega
-        const status = result[0].ultimoStatus;
-        const motivoRecusa = result[0].motivoRecusa;
-        const dataEntrega = result[0].dataEntrega;
-        
-        // Renderize a página com as informações
-        res.render('acompanhar', { 
-            numeroSolicitacao, 
-            status,
-            motivoRecusa,
-            dataEntrega
-        });
     });
 });
 
@@ -187,7 +185,7 @@ app.get('/demandas', verificaAutenticacao, (req,res) => {
     const searchDemandas = `
     SELECT 
     d.*,
-    sd.statusDemanda AS ultimoStatus,
+    sd.statusdemanda AS ultimoStatus,
     sd.dataRegistro AS dataUltimoStatus,
     sdEnv.dataRegistro AS dataAbertura
     FROM 
@@ -202,7 +200,7 @@ app.get('/demandas', verificaAutenticacao, (req,res) => {
             FROM statusdemandas 
             WHERE numeroSolicitacao = d.numeroSolicitacao
         )
-    AND sdEnv.statusDemanda = 'ENVIADA';
+    AND sdEnv.statusdemanda = 'ENVIADA';
     `;
 
     db.query(searchDemandas, (err, results) => {
@@ -219,7 +217,7 @@ app.get('/demanda/:id', verificaAutenticacao, (req,res) => {
     const selectDemanda = `
     SELECT 
     d.*,
-    sd.statusDemanda AS ultimoStatus,
+    sd.statusdemanda AS ultimoStatus,
     sd.dataRegistro AS dataUltimoStatus,
     sdEnv.dataRegistro AS dataAbertura
     FROM 
@@ -237,7 +235,7 @@ app.get('/demanda/:id', verificaAutenticacao, (req,res) => {
             ORDER BY id DESC
             LIMIT 1
         )
-    AND sdEnv.statusDemanda = 'ENVIADA';
+    AND sdEnv.statusdemanda = 'ENVIADA';
     `;
     const selectStatusDemanda = `SELECT * FROM statusdemandas WHERE numeroSolicitacao=?`
 
@@ -255,26 +253,26 @@ app.get('/demanda/:id', verificaAutenticacao, (req,res) => {
             if(err){
                 console.error("Erro ao buscar status da demanda")
             }
-            res.render('demandaSingle', {demanda: result[0], statusDemanda: resultStatus})
+            res.render('demandaSingle', {demanda: result[0], statusdemanda: resultStatus})
         })
     })
 })
 
 app.post('/mudarStatus/:id', verificaAutenticacao, (req, res) => {
     const numeroSolicitacao = req.params.id;
-    const statusDemanda = req.body;
-    const novoStatus = statusDemanda.novoStatus;
-    const motivoRecusa = statusDemanda.motivoRecusa;
-    const dataEntrega = statusDemanda.dataEntrega;
+    const statusdemanda = req.body;
+    const novoStatus = statusdemanda.novoStatus;
+    const motivoRecusa = statusdemanda.motivoRecusa;
+    const dataEntrega = statusdemanda.dataEntrega;
     const updateData = 'UPDATE demandas SET dataEntrega = ? WHERE numeroSolicitacao = ?';
     const updateMotivo = 'UPDATE demandas SET motivoRecusa = ? WHERE numeroSolicitacao = ?';
 
 
-    console.log(numeroSolicitacao, statusDemanda);
+    console.log(numeroSolicitacao, statusdemanda);
 
     const dataAtualSplit = new Date().toISOString().split('T')[0];
 
-    const updateStatus = 'INSERT INTO statusdemandas (numeroSolicitacao, statusDemanda, dataRegistro) VALUES (?, ?, ?)';
+    const updateStatus = 'INSERT INTO statusdemandas (numeroSolicitacao, statusdemanda, dataRegistro) VALUES (?, ?, ?)';
 
     db.query(updateStatus, [numeroSolicitacao, novoStatus, dataAtualSplit], (err, result) => {
         if (err) {
@@ -611,7 +609,7 @@ app.post('/finalizacao', upload.fields([{ name: 'referenciaAnexo', maxCount: 1 }
 
     const insertstatusdemandas = `INSERT INTO statusdemandas (
         numeroSolicitacao,
-        statusDemanda,
+        statusdemanda,
         dataRegistro
     ) VALUES(?, ?, ?)`
 
@@ -643,13 +641,13 @@ app.post('/finalizacao', upload.fields([{ name: 'referenciaAnexo', maxCount: 1 }
                 timestamp: new Date().toISOString()
             });
         }
-        const statusDemanda = 'ENVIADA'
+        const statusdemanda = 'ENVIADA'
         console.log({
             numeroSolicitacao: numeroSolicitacao,
-            statusDemanda: statusDemanda,
+            statusdemanda: statusdemanda,
             dataatual: dataAtualSplit
         })
-        db.query(insertstatusdemandas, [numeroSolicitacao, statusDemanda , dataAtualSplit], (err, result) => {
+        db.query(insertstatusdemandas, [numeroSolicitacao, statusdemanda , dataAtualSplit], (err, result) => {
             if(err) {
                 console.error('Erro ao inserir status ao BD', err);
                 logger.error({
@@ -667,16 +665,27 @@ app.post('/finalizacao', upload.fields([{ name: 'referenciaAnexo', maxCount: 1 }
     })
 })
 
-app.get('/statusDemanda/:solicitacao', (req, res) => {
+app.get('/statusdemanda/:solicitacao', (req, res) => {
     const solicitacao = req.params.solicitacao;
     const sqlSolicitacao = 'SELECT * FROM statusdemandas WHERE numeroSolicitacao = ?'
     db.query(sqlSolicitacao, [solicitacao], (err, result) => {
         if(err) {
             console.error("Erro ao trazer status da solicitação" +err)
         }
-        const statusDemanda = result
-        res.json(statusDemanda);
+        const statusdemanda = result
+        res.json(statusdemanda);
     })
+});
+
+// Middleware para lidar com rotas inexistentes
+app.use((req, res, next) => {
+    res.render('erro404')
+});
+
+// Middleware para lidar com erros do servidor
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.render('ErroServidor')
 });
 
 

@@ -111,7 +111,7 @@
                         <% } %>
                         <% if (demanda.referenciaAnexo) { %>
                             <% if (isImage(demanda.referenciaAnexo)) { %>
-                                <img src="/<%= demanda.referenciaAnexo %>">
+                                <img src="/<%= demanda.referenciaAnexo %>" style="max-width: 100%;">
                             <% } else { %>
                                 <a href="/<%= demanda.referenciaAnexo %>" target="_blank">Visualizar PDF</a>
                             <% } %>
@@ -124,7 +124,7 @@
                     <p><strong>Autorização:</strong> <br>
                         <% if (demanda.autorizacao) { %>
                             <% if (isImage(demanda.autorizacao)) { %>
-                                <img src="/<%= demanda.autorizacao %>">
+                                <img src="/<%= demanda.autorizacao %>" style="max-width: 100%;">
                             <% } else { %>
                                 <a href="/<%= demanda.autorizacao %>" target="_blank">Visualizar PDF</a>
                             <% } %>
