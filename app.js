@@ -146,7 +146,7 @@ app.post('/pesquisarSolicitacao', (req, res) => {
         WHERE 
             d.numeroSolicitacao = ?
         ORDER BY 
-            sd.dataRegistro DESC 
+            sd.id DESC 
         LIMIT 1
     `;
 
