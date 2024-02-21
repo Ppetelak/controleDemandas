@@ -140,17 +140,17 @@
 
         <table class="table" id="tabelaStatus">
             <thead>
-                <% if(statusDemanda.length > 0) { %>
+                <% if(statusdemanda.length > 0) { %>
                 <tr>
                     <th scope="col">Data</th>
                     <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
-                    <% statusDemanda.forEach(function(status) { %>
+                    <% statusdemanda.forEach(function(status) { %>
                         <tr>
                             <td><%= status.dataRegistro.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
-                            <td><%= status.statusDemanda %></td>
+                            <td><%= status.statusdemanda %></td>
                         </tr>
                    <% }); %>
                 <% } else { %>
