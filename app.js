@@ -1,4 +1,4 @@
-const db = require('./database')
+const { db, connectToDatabase } = require('./database');
 const express = require('express')
 const fs = require('fs');
 const ejs = require('ejs')
@@ -16,6 +16,7 @@ const cookie = require('cookie-parser')
 const { url } = require('inspector')
 const ExcelJS = require('exceljs');
 const uuid = require('uuid'); 
+const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -27,6 +28,23 @@ app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
+
+/* VERIFICA SE A CONEXÃO COM BANCO DE DADOS FOI ESTABELECIDA ANTES DE INICIAR A APLICAÇÃO */
+
+connectToDatabase()
+    .then(() => {
+        // Se a conexão com o banco de dados for bem-sucedida, inicie o servidor Express
+        app.listen(port, () => {
+            console.log(`Servidor rodando na porta ${port}`);
+        });
+    })
+    .catch((error) => {
+        app.get('*', (req, res) => {
+            res.redirect('/error404');
+        });
+        console.error('Erro ao conectar ao banco de dados:', error);
+        process.exit(1);
+    });
 
 /* CRIPTOGRAFIA DE ACESSO */
 
@@ -687,9 +705,3 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.render('ErroServidor')
 });
-
-
-app.listen(3050, () => {
-    console.log('Aplicação rodando na porta 3050');
-});
-  
