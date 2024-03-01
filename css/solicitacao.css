@@ -230,6 +230,25 @@ h3 {
     background-color: blue;
 }
 
+#wppButton {
+    display: inline-block;
+    background-color: #25D366; /* Cor verde característica do WhatsApp */
+    color: #FFF; /* Cor do texto branco */
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#voltar {
+    background: var(--orange);
+    width: fit-content;
+}
+
 
 @media screen and (max-width: 600px) {
     .numeroSolicitacao {

@@ -24,15 +24,19 @@
                 <img src="/img/logoMidiaBrancaSimbolo.png" class="img-fluid">
                 <h3>Ops ... </h3>
                 <span> Não encontramos uma demanda aberta com o número informado, poderia verificar a numeração digitada e tentar novamente? <br> 
+                    <div class="row justify-content-center">
+                        <button class="btn btn-primary" id="voltar" onclick="voltarParaEtapaAnterior()">Voltar</button>
+                    </div>
                 Se preferir você pode entrar em contato conosco pelo WhatsApp</span>
                 <div class="row">
-                    <a href="https://api.whatsapp.com/send?phone=554195064261" target="_blank"><button class="btn btn-primary"><i class="bi bi-whatsapp"></i> WhatsApp</button> </a>
+                    <a href="https://api.whatsapp.com/send?phone=554195064261" target="_blank"><button class="btn btn-primary" id="wppButton"><i class="bi bi-whatsapp"></i> WhatsApp</button> </a>
                 </div>
                 <span> Obrigado! </span>
             </div>
         </div>
     </div>
 </body>
+<script src="/js/index.js"></script>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </html>

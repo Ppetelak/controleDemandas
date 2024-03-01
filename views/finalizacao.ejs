@@ -28,10 +28,14 @@
                     <div class="numeroSolicitacao" id="codigoSolicitacao"><%= numeroSolicitacao %></div> <button onclick="copiarCodigo()"><i class="bi bi-copy"></i> Copiar nº solicitação</button>
                 </div>
                 <span> Guarde esse número contigo que será necessário para acompanhar a solicitação e verificar seu status através do sistema de demandas.</span>
+                <div class="row justify-content-center">
+                    <button class="btn btn-primary" id="voltar" onclick="voltarParaEtapaAnterior()">Voltar</button>
+                </div>
             </div>
         </div>
     </div>
 </body>
+<script src="/js/index.js"></script>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
