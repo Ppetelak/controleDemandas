@@ -16,7 +16,8 @@ const cookie = require('cookie-parser')
 const { url } = require('inspector')
 const ExcelJS = require('exceljs');
 const uuid = require('uuid'); 
-const port = 3000;
+const port = process.env.PORT || 3000;
+const appUrl = process.env.APP_URL || 'http://localhost:3000';
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -83,7 +84,7 @@ app.post('/login-verifica', (req, res) => {
             error: err.message,
             stack: err.stack,
             timestamp: new Date().toISOString()
-          });
+        });
         return res.render('login', { error: 'Erro no servidor contate o suporte' });
         }
 
