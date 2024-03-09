@@ -1,0 +1,60 @@
+<div class="form-group mt-3">
+    <label for="nome" class="d-block">Este material será impresso por quem?</label>
+    <span class="d-block mt-3 mb-3"> Precisamos entender se você vai ser responsável pela impressão desse material ou se você quer que ele seja impresso pela Mídia (AllCross). Esse processo é para entendermos sobre quem fará o pagamento referente ao produto.</span>
+    
+    <input type="radio" class="btn-check" name="quemImprimi" id="quemImprimi1" autocomplete="off" value="a própria unidade" required>
+    <label class="btn btn-secondary check-btn" for="quemImprimi1">
+        VOCÊ/SUA UNIDADE </br>
+    </label>
+
+    <input type="radio" class="btn-check" name="quemImprimi" id="quemImprimi2" autocomplete="off" value="Mídia Ideal">
+    <label class="btn btn-secondary" for="quemImprimi2">
+        MÍDIA IDEAL <BR>
+    </label>
+</div>
+<div class="seMidia"> 
+    <div class="form-group mt-3">
+        <label for="nome" class="d-block">Essa impressão foi autorizada pelo seu superior?
+            </label>
+        <span class="d-block mt-3 mb-3"> Essa autorização é necessária, pois para a confecção do material impresso, precisamos de liberação do orçamento, independente do valor.</span>
+        
+        <input type="radio" class="btn-check" name="autorizacaoTem" id="autorizacaoTem1" autocomplete="off" value="sim" required>
+        <label class="btn btn-secondary check-btn" for="autorizacaoTem1">
+            SIM </br>
+        </label>
+    
+        <input type="radio" class="btn-check" name="autorizacaoTem" id="autorizacaoTem2" autocomplete="off" value="nao">
+        <label class="btn btn-secondary" for="autorizacaoTem2">
+            NÃO <BR>
+        </label>
+    </div>
+    <div class="col-12" id="seNao">
+        <img src="/img/iconedeatencao.png" alt="ícone de atenção">
+        <p class="mt-3">Você só poderá concluir após receber a aprovação do seu superior. Entre em contato com eles e solicite uma autorização via email ou via WhatsApp para nos enviar um print com a mesma ou áudio.</p>
+    </div>
+    <div id="seSim">
+        <div class="mb-3 mt-3">
+            
+            <label for="formFile" class="form-label">Insira aqui a autorização.</label> <br>
+            <span> Um print da conversa solicitando e a autorização para produzir o material e/ou um áudio. Insira um arquivo de cada vez, eles aparecerão confirmados o upload logo abaixo, verifique se estão confirmados e siga para próxima etapa.</span>
+            <div class="containerUpload">
+                <div class="file-upload"> 1
+                    <input type="file" name="file-input" class="file-input">
+                    <div class="icon">
+                        <ion-icon name="arrow-up-outline"></ion-icon>
+                    </div>
+                    <h3>Arraste e solte o arquivo aqui</h3>
+                    <span> Ou </span>
+                    <strong> Procurar </strong>
+                    <button class="remove">
+                        <ion-icon name="close"></ion-icon>
+                    </button>
+                </div>
+                <div class="list-upload attachment-required">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

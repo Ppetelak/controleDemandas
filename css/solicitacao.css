@@ -1,8 +1,18 @@
-.bodySolicitacao{
+.bodySolicitacao {
     background: var(--white-100);
-    padding-left: 2rem;
-    align-items: center;
+    padding: 2rem;
     color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btnVoltar {
+    position: absolute;
+    top: 3rem;
+    left: 15rem;
 }
 
 .impresso {
@@ -18,13 +28,17 @@
     flex-direction: column;
     gap: 1rem;
     justify-content: center;
-    height: 100vh;
     align-items: center;
+}
+
+.form-group {
+    text-align: center;
 }
 
 form {
     width: 100%;
     align-items: center;
+    text-align: center;
 }
 
 label {
@@ -43,15 +57,36 @@ label {
     background: rgba(139, 209, 207, 0.00);
 }
 
+#seSimLogo {
+    background: white;
+    padding: 20px;
+    margin-top: 10px;
+    border: 1px solid var(--blue);
+    border-radius: 15px;
+}
+
+.status-column .alteracao {
+    background: #fbff1b;
+    color: #1e1f0c;
+    outline: #1e1f0c solid 1px;
+
+}
+
 span {
     font-size: 0.8rem;
     color: var(--gray);
 }
 
-#btnProximo {
+.btnproximo , .verMais {
     background: #FEE4D9;
     color: var(--orange);
     border-color: var(--orange);
+}
+
+.btnproximo:hover , .verMais:hover{
+    background: var(--blue);
+    color: var(--blue-200);
+    border-color: var(--blue);
 }
 
 h3 {
@@ -70,26 +105,44 @@ h3 {
     color: #8BD1CF;
 }
 
-.btn-check:checked + .btn-secondary, 
-.btn-check:checked + .btn-secondary:hover {
+.btn-check:checked+.btn-secondary,
+.btn-check:checked+.btn-secondary:hover {
     background-color: #8BD1CF;
-    color: #fff; 
+    color: #fff;
     border-color: #8BD1CF;
 }
 
-.btn-check:checked + .btn-secondary span, 
-.btn-check:checked + .btn-secondary:hover span{
-    color: #fff; 
+.btn-check:checked+.btn-secondary span,
+.btn-check:checked+.btn-secondary:hover span {
+    color: #fff;
 }
 
-.btn-check:hover + .btn-secondary {
-    background-color: #8BD1CF; 
+.btn-check:hover+.btn-secondary {
+    background-color: #8BD1CF;
     color: #fff;
-    border-color: #8BD1CF; 
+    border-color: #8BD1CF;
 }
 
-.btn-check:hover + .btn-secondary span {
+.btn-check:hover+.btn-secondary span {
     color: #fff;
+}
+
+.exemplos {
+    background: var(--blue);
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 3rem;
+}
+
+.exemplos>div {
+    text-align: center;
+    align-items: center;
+    margin: auto;
+}
+
+.nomeUsuario {
+    color: var(--blue);
+    font-size: 1.5rem;
 }
 
 #seNao {
@@ -122,17 +175,16 @@ h3 {
     background-size: cover;
 }
 
-.acompanhamento{
+.acompanhamento {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     justify-content: center;
-    height: 100vh;
     align-items: center;
     text-align: center;
 }
 
-.acompanhamento h3{
+.acompanhamento h3 {
     color: var(--white);
 }
 
@@ -150,7 +202,7 @@ h3 {
     padding: 0.5rem;
 }
 
-.acompanhamento span{
+.acompanhamento span {
     color: var(--white);
 }
 
@@ -161,7 +213,7 @@ h3 {
     margin-top: 1rem;
 }
 
-#btnFinal{
+#btnFinal {
     background: var(--blue);
     border-color: var(--blue-200);
 }
@@ -192,8 +244,8 @@ h3 {
     border-radius: 50%;
     padding: 22px;
     display: inline-flex;
-    justify-content: center; 
-    align-items: center; 
+    justify-content: center;
+    align-items: center;
 }
 
 .status-column .naoAceita {
@@ -208,7 +260,8 @@ h3 {
 }
 
 .motivoRecusa {
-    margin-top: 3rem;;
+    margin-top: 3rem;
+    ;
     background: #e6e6e6;
     padding: 12px;
     border-radius: 12px;
@@ -232,8 +285,10 @@ h3 {
 
 #wppButton {
     display: inline-block;
-    background-color: #25D366; /* Cor verde característica do WhatsApp */
-    color: #FFF; /* Cor do texto branco */
+    background-color: #25D366;
+    /* Cor verde característica do WhatsApp */
+    color: #FFF;
+    /* Cor do texto branco */
     text-decoration: none;
     font-size: 16px;
     font-weight: bold;
@@ -247,6 +302,284 @@ h3 {
 #voltar {
     background: var(--orange);
     width: fit-content;
+}
+
+ul {
+    list-style: none;
+}
+
+.containerUpload {
+    max-width: 500px;
+    width: 100%;
+    margin: 2em auto;
+    padding: 0 20px;
+}
+
+.file-upload {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em;
+    background-color: #d6d6d6;
+    border-radius: 12px;
+    /* box-shadow: var(--CorMHAmarelo) 0 25px 50px -12px; */
+}
+
+.file-upload input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.file-upload .icon {
+    position: relative;
+    margin-bottom: 5em;
+}
+
+.file-upload .icon ion-icon {
+    font-size: 4em;
+    color: white;
+    z-index: 1;
+    position: relative;
+}
+
+.file-upload .icon::before, .file-upload .icon::after {
+    content: ' ';
+    width: 56px;
+    height: 56px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 50%;
+    border: 3px solid var(--blue);
+    background-color: var(--orange);
+    transform: scale(1.5);
+    z-index: 1;
+}
+
+.file-upload .icon::after {
+    border: 0;
+    transform: scale(2.5);
+    z-index: 0;
+    /* background-color: hsla(235, 100%, 95%, 1); */
+}
+
+.file-upload h3 {
+    font-weight: 400;
+    font-size: 1.5em;
+    color: var(--blue);
+}
+
+.file-upload span, .file-upload strong {
+    color: var(--blue);
+}
+
+.file-upload button {
+    border: 0;
+    outline: 0;
+    border-radius: 50%;
+    color: white;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--orange);
+    box-shadow: var(--orange) 0 4px 18px;
+    transition: all .3s ease-out;
+}
+
+.file-upload button ion-icon {
+    font-size: 1.5em;
+    transform: rotate(45deg);
+}
+
+.file-upload:hover button {
+    transform: translateY(-10px);
+}
+
+.list-upload {
+    padding: 0 2em;
+}
+
+.list-upload ul li {
+    position: relative;
+    display: flex;
+    margin: 3em 0;
+    padding-right: 2em;
+}
+
+.list-upload .thumbnail {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+    border-radius: 7px;
+    background-color: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.list-upload .thumbnail>ion-icon {
+    font-size: 2em;
+    color: hsla(235, 100%, 99%, 1);
+    display: none;
+}
+
+.file-list:where(.file .application .text) .thumbnail>[name="document-outline"],
+.file-list.image .thumbnail>[name="image-outline"],
+.file-list.video .thumbnail>[name="videocam-outline"],
+.file-list.image .thumbnail>[name="musical-outline"] {
+    display: block;
+}
+
+.list-upload .thumbnail .completed {
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    margin-top: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #2ecc71;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.list-upload .properties {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    gap: 5px;
+}
+
+.list-upload .properties .title {
+    word-break: break-word;
+}
+
+.list-upload .properties .size {
+    color: var(--blue);
+    font-size: 12px;
+}
+
+.list-upload .properties :where(.progress, .buffer) {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 14px;
+    background-color: hsla(235, 100%, 95%, 1);
+}
+
+.list-upload .properties .buffer {
+    width: 90%;
+    background: linear-gradient(90deg, #82f4b1 0%, #2ecc71 100%);
+}
+
+.list-upload .properties .percentage {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    font-size: 10px;
+}
+
+.list-upload .remove {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    border: 0;
+    outline: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 3s ease-out;
+}
+
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100px;
+    height: 50px;
+    margin: 0 auto;
+    animation: slide-in 2s;
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(-100vw);
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes leap {
+    0% {
+        transform: translateY(0);
+    }
+
+    7% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.3);
+    }
+
+    50% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    75% {
+        transform: translateY(10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.dot {
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+}
+
+.dot:nth-child(1) {
+    background-color: var(--blue);
+    animation: leap 1s ease-in-out alternate 0.4s infinite;
+}
+
+.dot:nth-child(2) {
+    background-color: var(--orange);
+    animation: leap 1s ease-in-out alternate 0.6s infinite;
+}
+
+.dot:nth-child(3) {
+    background-color: var(--blue-200);
+    animation: leap 1s ease-in-out alternate 0.8s infinite;
 }
 
 
@@ -290,6 +623,4 @@ h3 {
         flex-direction: column;
         gap: 12px;
     }
-
-
 }

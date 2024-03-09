@@ -26,16 +26,18 @@
                 Em breve você poderá acompanha-lá através do código abaixo: </h3>
                 <div class="row">
                     <div class="numeroSolicitacao" id="codigoSolicitacao"><%= numeroSolicitacao %></div> <button onclick="copiarCodigo()"><i class="bi bi-copy"></i> Copiar nº solicitação</button>
+                    <div class="copiado-msg" style="display: none;"><div class="alert alert-success alert-dismissible fade show" role="alert">Código copiado para a área de transferência!</div></div>
                 </div>
-                <span> Guarde esse número contigo que será necessário para acompanhar a solicitação e verificar seu status através do sistema de demandas.</span>
+
+                <span> Guarde esse número contigo que será necessário para acompanhar a solicitação <br>
+                    e verificar seu status através do sistema de demandas. Isso através da página inicial mesmo!</span>
                 <div class="row justify-content-center">
-                    <a href="https://demandas.midiaideal.com"><button class="btn btn-primary" id="voltar">Voltar</button></a>
+                    <a href="https://demandas.midiaideal.com"><button class="btn btn-primary" id="voltar">Voltar ao início</button></a>
                 </div>
             </div>
         </div>
     </div>
 </body>
-<script src="/js/index.js"></script>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -57,7 +59,11 @@
         // Remove o elemento temporário
         document.body.removeChild(tempInput);
 
-        alert('Código copiado para a área de transferência!');
+        // Exibe a mensagem de sucesso
+        $('.copiado-msg').show();
+        setTimeout(function() {
+            $('.copiado-msg').hide();
+        }, 3000); // Esconde a mensagem após 3 segundos
     }
 </script>
 </html>

@@ -32,3 +32,15 @@ CREATE TABLE usuarios (
     senha VARCHAR(50),
     nome VARCHAR(250)
 )
+
+
+/* ATUALIZAÇÕES A SEREM FEITAS NO SERVER */
+-- Adicionar uma nova tabela chamada alterações -- 
+
+CREATE TABLE alteracoes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    numeroSolicitacao INT NOT NULL,
+    dataAlteracao DATETIME NOT NULL,
+    descricao TEXT
+);
+

@@ -1,3 +1,7 @@
-/node_modules
-/uploads
-/database.js
+node_modules
+uploads
+erros
+database.js
+status.txt
+.drawio
+midiaidealdemandas.code-workspace

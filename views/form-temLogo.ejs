@@ -1,0 +1,165 @@
+<h3> Olá <strong><span class="nomeUsuario"> </span></strong>, vamos continuar, </h3>
+<div class="form-group mt-3">
+    <label for="nome" class="d-block">ESSE MATERIAL TERÁ LOGO?</label>
+    <span class="d-block mt-3 mb-3"> Aqui você deve selecionar todas as logos que precisam estar nesse material, sejam elas de corretora, administradora ou operadora.</span>
+    
+    <input type="radio" class="btn-check" name="temLogo" id="temLogo1" autocomplete="off" value="sim" required>
+    <label class="btn btn-secondary check-btn" for="temLogo1" required>
+        SIM </br>
+    </label>
+
+    <input type="radio" class="btn-check" name="temLogo" id="temLogo2" autocomplete="off" value="nao">
+    <label class="btn btn-secondary" for="temLogo2">
+        NÃO <br>
+    </label>
+</div>
+<div id="seSimLogo">
+    <div class="mb-3 mt-3">
+        <h1 style="
+        font-size: 1rem; color:#8C8C8D;">SELECIONE CONFORME A NECESSIDADE:</h1>
+        <div class="row mt-3">
+            <div class="col">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="columnsContainer">
+                            <h2 style="
+                            font-size: 1rem; color:#004BC8;">CORRETORA E OU EMPRESA</h2>
+                            <select class="form-select mb-2" name="corretoras" required>
+                                <option selected disabled value="">Selecione uma opção</option>
+                                <option value="Nenhuma">Nenhuma Corretora</option>
+                                <option value="AllCross">AllCross</option>
+                                <option value="BRKR">BRKR</option>
+                                <option value="Canal de Negócios">Canal de Negócios</option>
+                                <option value="Classe">Classe</option>
+                                <option value="Compar">Compar</option>
+                                <option value="Espaço Assessoria">Espaço Assessoria</option>
+                                <option value="Freedom">Freedom</option>
+                                <option value="Império">Império</option>
+                                <option value="Kop Seguros">Kop Seguros</option>
+                                <option value="Mount Hermon">Mount Hermon</option>
+                                <option value="MountPay">MountPay</option>
+                                <option value="Prime Broker">Prime Broker</option>
+                                <option value="Tear">Tear</option>
+                                <option value="T. Becker">T. Becker</option>
+                                <option value="Select">Select</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-success btn-sm addButtonCorretora"><i class="bi bi-plus-lg"></i></button>
+                    </div>
+                    <div class="col-4">
+                        <div class="columnsContainer">
+                            <h2 style="
+                            font-size: 1rem; color:#004BC8;">ADMINISTRADORA</h2>
+                            <select class="form-select mb-2" name="administradoras" required>
+                                <option selected disabled value="">Selecione uma opção</option>
+                                <option value="Nenhuma">Nenhuma Administradora</option>
+                                <option value="Mount Hermon">Mount Hermon</option>
+                                <option value="Classe Administradora">Classe Administradora</option>
+                                <option value="Compar">Compar</option>
+                            </select>
+                            <button type="button" class="btn btn-success btn-sm addButtonAdministradora"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="columnsContainer">
+                            <h2 style="
+                            font-size: 1rem; color:#004BC8;">OPERADORA</h2>
+                            <select class="form-select mb-2" name="operadora" required>
+                                <option selected disabled value="">Selecione uma opção</option>
+                                <option value="Nenhuma">Nenhuma Operadora</option>
+                                <option value="Amil">Amil</option>
+                                <option value="Amil Dental">Amil Dental</option>
+                                <option value="Ampla Saúde">Ampla Saúde</option>
+                                <option value="Angeli">Angeli</option>
+                                <option value="Ativia">Ativia</option>
+                                <option value="Aurora">Aurora</option>
+                                <option value="Bradesco Dental">Bradesco Dental</option>
+                                <option value="Bradesco Saúde">Bradesco Saúde</option>
+                                <option value="Cassi">Cassi</option>
+                                <option value="CedPlan">CedPlan</option>
+                                <option value="Círculo Saúde">Círculo Saúde</option>
+                                <option value="Clinipam">Clinipam</option>
+                                <option value="Cmed">Cmed</option>
+                                <option value="ConSaúde">ConSaúde</option>
+                                <option value="Creci-ce">Creci-ce</option>
+                                <option value="Dental Uni">Dental Uni</option>
+                                <option value="Dra Santa">Dra Santa</option>
+                                <option value="Fátima Saúde">Fátima Saúde</option>
+                                <option value="Grarantia Saúde">Grarantia Saúde</option>
+                                <option value="GNDI">GNDI</option>
+                                <option value="HappyMed">HappyMed</option>
+                                <option value="HapVida">HapVida</option>
+                                <option value="Hospitalar">Hospitalar</option>
+                                <option value="Humana">Humana</option>
+                                <option value="Ideal Saúde">Ideal Saúde</option>
+                                <option value="Klini">Klini</option>
+                                <option value="MedCare">MedCare</option>
+                                <option value="MedGold">MedGold</option>
+                                <option value="Medhealth">Medhealth</option>
+                                <option value="MedSenior">MedSenior</option>
+                                <option value="MedSul">MedSul</option>
+                                <option value="Nova Rio">Nova Rio</option>
+                                <option value="Odontogroup">Odontogroup</option>
+                                <option value="Odontoprev">Odontoprev</option>
+                                <option value="Paraná Clínicas">Paraná Clínicas</option>
+                                <option value="Pessoal Saúde">Pessoal Saúde</option>
+                                <option value="Porto Dias Saúde">Porto Dias Saúde</option>
+                                <option value="Select">Select</option>
+                                <option value="Sempre Vida">Sempre Vida</option>
+                                <option value="Smile">Smile</option>
+                                <option value="SulAmerica">SulAmerica</option>
+                                <option value="Sulmed">Sulmed</option>
+                                <option value="Total MedCare">Total MedCare</option>
+                                <option value="Unimed">Unimed</option>
+                                <option value="Unimed Belo Horizonte">Unimed Belo Horizonte</option>
+                                <option value="Unimed Foz">Unimed Foz</option>
+                                <option value="Unimed Guaratinguetá">Unimed Guaratinguetá</option>
+                                <option value="Verte Saúde">Verte Saúde</option>
+                            </select>
+                            <button type="button" class="btn btn-success btn-sm addButtonOperadora"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="outrasLogos row mt-3">
+    <div class="row mt-3">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <button class="btn btn-secondary" type="button" id="adicionarLogo">
+                ADICIONAR OUTRAS
+            </button>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <div class="col-12 novaLogo" style="display:none">
+        <div class="mb-3 mt-3">
+            <label class="form-label" for="logosNovasNomes"><span>Insira os nomes das corretoras ou operadoras que precisa ser adicionado a logo em seguida anexe os arquivos</span></label>
+            <input type="text" class="form-control" id="logosNovasNomes" name="logosNovasNomes"">
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="formFile" class="form-label">Anexe as logos:</label> <br>
+            <span> Envie arquivos PNG ou JPG, envie um único arquivo de cada vez</span>
+            <div class="containerUpload">
+                <div class="file-upload"> 1
+                    <input type="file" name="file-input" class="file-input">
+                    <div class="icon">
+                        <ion-icon name="arrow-up-outline"></ion-icon>
+                    </div>
+                    <h3>Arraste e solte o arquivo aqui</h3>
+                    <span> Ou </span>
+                    <strong> Procurar </strong>
+                    <button class="remove">
+                        <ion-icon name="close"></ion-icon>
+                    </button>
+                </div>
+                <div class="list-upload">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

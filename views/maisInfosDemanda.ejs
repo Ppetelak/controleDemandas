@@ -1,0 +1,148 @@
+<div class="container mt-5">
+    <div class="row">
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Informações de localização e contato</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+              <p><strong>Nome Solicitante:</strong>
+                <%= demanda.nome %>
+              </p>
+              <p><strong>Telefone:</strong>
+                <%= demanda.telefone %>
+              </p>
+                </div>
+                <div class="col-md-6">
+                <p><strong>Empresa Solicitante:</strong>
+                    <%= demanda.qualEmpresa %>
+                </p>
+                <p><strong>Cidade/ Unidade:</strong>
+                    <%= demanda.qualUnidade %>
+                </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Sobre material</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Tipo de Material:</strong>
+                    <%= demanda.tipoMaterial %>
+                    </p>
+                    <p><strong>Qual Material:</strong>
+                    <%= demanda.qualMaterial %>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Qual Público do Material:</strong>
+                        <%= demanda.qualPublico %>
+                    </p>
+                    <p><strong>Logos</strong><br>
+                        Corretora(s): <%= demanda.corretoras %> <br>
+                        Administradora(s): <%= demanda.administradoras %> <br>
+                        Operadora(s): <%= demanda.operadora %>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <p> <strong> Informações de valor no material: </strong> <br>
+                    <%= demanda.valorMaterial %>
+                </p>
+                <p> <strong> Especificações do material: </strong> <br>
+                    <%= demanda.especificacoes %>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Anexos e outros</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Referência:</strong> <br>
+                        <% function isImage(filename) { %>
+                        <%    var ext = filename.split('.').pop().toLowerCase(); %>
+                        <%    return ext === 'jpg' || ext === 'jpeg' || ext === 'png' || ext === 'gif' || ext === 'bmp'; %>
+                        <% } %>
+                        <% if (demanda.referenciaAnexo) { %>
+                            <% if (isImage(demanda.referenciaAnexo)) { %>
+                                <img src="/<%= demanda.referenciaAnexo %>" style="max-width: 100%;">
+                            <% } else { %>
+                                <a href="/<%= demanda.referenciaAnexo %>" target="_blank">Visualizar PDF</a>
+                            <% } %>
+                        <% } else { %>
+                            Imagem não anexada.
+                        <% } %>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Autorização:</strong> <br>
+                        <% if (demanda.autorizacao) { %>
+                            <% if (isImage(demanda.autorizacao)) { %>
+                                <img src="/<%= demanda.autorizacao %>" style="max-width: 100%;">
+                            <% } else { %>
+                                <a href="/<%= demanda.autorizacao %>" target="_blank">Visualizar PDF</a>
+                            <% } %>
+                        <% } else { %>
+                            Imagem não anexada.
+                        <% } %>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title"> Atualizações de Status </h5>
+        </div>
+        <div class="card-body">
+            <table class="table" id="tabelaStatus">
+                <thead>
+                    <% if(statusdemanda.length > 0) { %>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <% statusdemanda.forEach(function(status) { %>
+                            <tr>
+                                <td><%= status.dataRegistro.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
+                                <td><%= status.statusdemanda %></td>
+                            </tr>
+                       <% }); %>
+                    <% } else { %>
+                        <p> Sem status no sistema </P>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <% if(status === 'ALTERAÇÃO') { %>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title"> ALTERAÇÕES </h5>
+        </div>
+        <div class="card-body">
+            Aqui virá as solicitações de alterações
+        </div>
+    </div>
+    <% } else { %>
+        <div class="row">
+    
+        </div>
+    <% } %>
+</div>
