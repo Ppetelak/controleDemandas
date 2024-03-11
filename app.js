@@ -17,7 +17,7 @@ const { url } = require('inspector')
 const ExcelJS = require('exceljs');
 const uuid = require('uuid'); 
 const port = process.env.PORT || 3000;
-const appUrl = process.env.APP_URL || 'http://localhost:3000';
+const appUrl = process.env.APP_URL || 'http://demandas.midaideal.com';
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -158,7 +158,7 @@ app.post('/upload', upload.array('file'), (req, res) => {
     const filepaths = req.files.map(file => ({
         originalName: req.locals.originalName,
         modifiedName: file.filename,
-        filepath: path.join(__dirname, 'uploads', file.filename)
+        filepath: path.join(appUrl,'uploads', file.filename)
     }));
     console.log({filepaths})
     res.json({ filepaths });
@@ -167,7 +167,7 @@ app.post('/upload', upload.array('file'), (req, res) => {
 app.post('/remove', (req, res) => {
     const { removefile } = req.body;
     console.log('chamou a rota de remover')
-    const filepath = path.join(__dirname, 'uploads', removefile);
+    const filepath = path.join('uploads', removefile);
     
     // Remove o arquivo
     fs.unlink(filepath, (err) => {
