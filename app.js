@@ -71,36 +71,6 @@ const verificaAutenticacao = (req, res, next) => {
     }
 };
 
-app.get('/voltar/:etapaAnterior', (req,res) => {
-    let etapaVoltar = req.params.etapaAnterior
-
-    if ( etapaVoltar === 'temLogo') {
-        res.render('temLogo', {
-            primeiraEtapa: req.session.primeiraEtapa,
-            segundaEtapa: req.session.segundaEtapa,
-            qualMaterial: req.session.qualMaterial,
-            quemImprimi: req.session.quemImprimi,
-            autorizacao: req.session.autorizacao,
-            publico: req.session.publico,
-        })
-    }
-
-    if( etapaVoltar === 'temValor') {
-        res.render('valorMaterial' , {
-            primeiraEtapa: req.session.primeiraEtapa,
-            segundaEtapa: req.session.segundaEtapa,
-            qualMaterial: req.session.qualMaterial,
-            quemImprimi: req.session.quemImprimi,
-            autorizacao: req.session.autorizacao,
-            publico: req.session.publico,
-        });
-    }
-
-
-    console.log(etapaVoltar);
-
-})
-
 app.post('/login-verifica', (req, res) => {
     const { username, password } = req.body;
     console.log(username, password)
@@ -213,6 +183,7 @@ app.post('/remove', (req, res) => {
 app.get('/pesquisarSolicitacao/:numeroSolicitacao', (req, res) => {
     const numeroSolicitacao = req.params.numeroSolicitacao;
     const selectStatusDemanda = `SELECT * FROM statusdemandas WHERE numeroSolicitacao=?`
+    const selectAlteracoes = `SELECT * FROM alteracoes WHERE numeroSolicitacao=?`
     const query = `
         SELECT 
         sd.statusdemanda AS ultimoStatus,
@@ -253,17 +224,69 @@ app.get('/pesquisarSolicitacao/:numeroSolicitacao', (req, res) => {
                 if(err){
                     console.error("Erro ao buscar status da demanda")
                 }
-                res.render('acompanhar', { 
-                    numeroSolicitacao, 
-                    status,
-                    motivoRecusa,
-                    dataEntrega,
-                    demanda,
-                    statusdemanda: resultStatus
-                });
+                db.query(selectAlteracoes, [numeroSolicitacao], (err, resultAlter) => {
+                    if(err) {
+                        console.error('Erro na busca pela tabela de alterações')
+                    }
+                    const selectAnexos = 'SELECT * FROM anexos WHERE  numeroSolicitacao = ?';
+                    db.query(selectAnexos, [numeroSolicitacao], (err, resultAnexos) => {
+                        if(err){
+                            console.error('erro na busca por anexos referente a demanda')
+                            logger.error({
+                                message: 'erro na busca por anexos referente a demanda:' +numeroSolicitacao,
+                                error: err.message,
+                                stack: err.stack,
+                                timestamp: new Date().toISOString()
+                            });
+                        }
+                        res.render('acompanhar', { 
+                            numeroSolicitacao, 
+                            status,
+                            motivoRecusa,
+                            dataEntrega,
+                            demanda,
+                            statusdemanda: resultStatus,
+                            alteracoes: resultAlter,
+                            anexos: resultAnexos
+                        })
+                    });
+                })
             })
         }
     });
+});
+
+app.post('/solicitacaoAlteracao/:numeroSolicitacao', (req, res) => {
+    let numeroSolicitacao = req.params.numeroSolicitacao;
+    let descricao = req.body.descricao;
+
+    let novoStatus = 'ALTERAÇÃO'
+
+    let dataHoje = new Date().toISOString().split('T')[0];
+
+    const insertAlter = 'INSERT INTO alteracoes (numeroSolicitacao, dataAlteracao, descricao) VALUES (?, ?, ?)';
+    const updateStatus = 'INSERT INTO statusdemandas (numeroSolicitacao, statusdemanda, dataRegistro) VALUES (?, ?, ?)';
+
+    db.query(insertAlter, [numeroSolicitacao, dataHoje, descricao], (err, result) => {
+        if(err) {
+            console.error('Erro ao inserir alteração na tabela de alteração', err)
+        }
+        db.query(updateStatus, [numeroSolicitacao, novoStatus, dataHoje], (err, result) => {
+            if (err) {
+                console.error('Erro ao atualizar status da Solicitação', err);
+                logger.error({
+                    message: 'Erro ao atualizar status de demanda:',
+                    error: err.message,
+                    stack: err.stack,
+                    timestamp: new Date().toISOString()
+                });
+                return res.status(500).send('Erro ao atualizar status da Solicitação');
+            } 
+            return res.status(200).json({
+                mensagem: 'Alteração solicitada com sucesso',
+                });
+        });
+    })
 });
 
 app.get('/demandas', verificaAutenticacao, (req,res) => {
@@ -339,7 +362,32 @@ app.get('/demanda/:id', verificaAutenticacao, (req,res) => {
             if(err){
                 console.error("Erro ao buscar status da demanda")
             }
-            res.render('demandaSingle', {demanda: result[0], statusdemanda: resultStatus})
+
+            const selectAlteracoes = 'SELECT * FROM alteracoes WHERE numeroSolicitacao = ?'
+            db.query(selectAlteracoes, [numeroSolicitacao], (err, resultAlteracoes) => {
+                if(err){
+                    console.error('erro na busca por alterações referente a demanda')
+                    logger.error({
+                        message: 'erro na busca por alterações referente a demanda:' +numeroSolicitacao,
+                        error: err.message,
+                        stack: err.stack,
+                        timestamp: new Date().toISOString()
+                    });
+                }
+                const selectAnexos = 'SELECT * FROM anexos WHERE  numeroSolicitacao = ?';
+                db.query(selectAnexos, [numeroSolicitacao], (err, resultAnexos) => {
+                    if(err){
+                        console.error('erro na busca por anexos referente a demanda')
+                        logger.error({
+                            message: 'erro na busca por anexos referente a demanda:' +numeroSolicitacao,
+                            error: err.message,
+                            stack: err.stack,
+                            timestamp: new Date().toISOString()
+                        });
+                    }
+                    res.render('demandaSingle', {demanda: result[0], statusdemanda: resultStatus, alteracoes: resultAlteracoes, anexos: resultAnexos})
+                })
+            })
         })
     })
 })
@@ -349,12 +397,12 @@ app.post('/mudarStatus/:id', verificaAutenticacao, (req, res) => {
     const statusdemanda = req.body;
     const novoStatus = statusdemanda.novoStatus;
     const motivoRecusa = statusdemanda.motivoRecusa;
+    const alteracao = statusdemanda.alteracao;
     const dataEntrega = statusdemanda.dataEntrega;
+    const linkEntrega = statusdemanda.linkEntrega;
+    const textoAprovacao = statusdemanda.textoAprovacao;
     const updateData = 'UPDATE demandas SET dataEntrega = ? WHERE numeroSolicitacao = ?';
     const updateMotivo = 'UPDATE demandas SET motivoRecusa = ? WHERE numeroSolicitacao = ?';
-
-
-    console.log(numeroSolicitacao, statusdemanda);
 
     const dataAtualSplit = new Date().toISOString().split('T')[0];
 
@@ -401,9 +449,75 @@ app.post('/mudarStatus/:id', verificaAutenticacao, (req, res) => {
                 }
             });
         }
+
+        if (novoStatus === 'ALTERAÇÃO' && alteracao) {
+            const insertAlteracao = 'INSERT INTO alteracoes (numeroSolicitacao, dataAlteracao, descricao) VALUES (?, ?, ?)';
+            db.query(insertAlteracao, [numeroSolicitacao, dataAtualSplit, alteracao], (err, result) => {
+                if (err) {
+                    console.error('Erro ao atualizar a alteração na tabela alteração', err);
+                    logger.error({
+                        message: 'Erro ao inserir a alteração na tabela alteração',
+                        error: err.message,
+                        stack: err.stack,
+                        timestamp: new Date().toISOString()
+                    });
+                }
+            });
+        }
+
+        if (novoStatus === 'ENTREGUE' && linkEntrega){ 
+            const updateDemandaLinkEntrega = 'UPDATE demandas SET linkEntrega= ? WHERE numeroSolicitacao = ?';
+            db.query(updateDemandaLinkEntrega, [linkEntrega, numeroSolicitacao], (err, result) => {
+                if (err) {
+                    console.error('Erro ao atualizar o link de entrega', err);
+                    logger.error({
+                        message: 'Erro ao atualizar o link de entrega',
+                        error: err.message,
+                        stack: err.stack,
+                        timestamp: new Date().toISOString()
+                    });
+                }
+            })
+        }
+
+        if (novoStatus === 'APROVAÇÃO' && textoAprovacao) {
+            const updateDemandaTextAprovacao = 'UPDATE demandas SET textoAprovacao = ? WHERE numeroSolicitacao = ?';
+            db.query(updateDemandaTextAprovacao, [textoAprovacao, numeroSolicitacao], (err, result) => {
+                if (err) {
+                    console.error('Erro ao atualizar o texto referente a aprovação', err);
+                    logger.error({
+                        message: 'Erro ao atualizar o texto referente a aprovação',
+                        error: err.message,
+                        stack: err.stack,
+                        timestamp: new Date().toISOString()
+                    });
+                }
+            })
+        }
         res.status(200).send('Status atualizado com sucesso');
     });
 });
+
+app.post('/mudarDataEntrega/:numeroSolicitacao', verificaAutenticacao, (req,res) => {
+    let numeroSolicitacao = req.params.numeroSolicitacao;
+    let novaData = req.body.novaDataEntrega;
+
+    let updateDataEntrega = 'UPDATE demandas SET dataEntrega = ? WHERE numeroSolicitacao =?';
+
+    db.query(updateDataEntrega, [novaData, numeroSolicitacao], (err, result) => {
+        if(err){
+            console.error('Erro ao atualizar data de emtrega da Solicitação', err);
+            logger.error({
+                message: 'Erro ao atualizar data de entrega de demanda:',
+                error: err.message,
+                stack: err.stack,
+                timestamp: new Date().toISOString()
+            });
+            return res.status(500).send('Erro ao atualizar data de entrega da Solicitação');
+        }
+        res.status(200).send('Data de entrega atualizada com sucesso');
+    })
+})
 
 app.get('/abrirSolicitacao', (req,res) => {
     res.render('form');
@@ -421,15 +535,120 @@ app.post('/enviarDados', (req,res) => {
     const numeroSolicitacao =
         `${dataAtual.getFullYear()}${padZero(dataAtual.getMonth() + 1)}${padZero(dataAtual.getDate())}` +
         `${padZero(dataAtual.getHours())}${padZero(dataAtual.getMinutes())}${padZero(dataAtual.getSeconds())}`;
-    let nome = dadosForm.nome
+    let nome = dadosForm.nome;
 
-    console.log(dadosForm, anexos);
-    
-    return res.status(200).json({
-        mensagem: 'Dados enviados com sucesso',
-        nome: nome,
-        numeroSolicitacao: numeroSolicitacao
-    });
+    const corretorasString = Array.isArray(dadosForm.corretoras) ? dadosForm.corretoras.join(', ') : dadosForm.corretoras;
+    const administradorasString = Array.isArray(dadosForm.administradoras) ? dadosForm.administradoras.join(', ') : dadosForm.administradoras;
+    const operadoraString = Array.isArray(dadosForm.operadora) ? dadosForm.operadora.join(', ') : dadosForm.operadora;
+    const dataAtualSplit = new Date().toISOString().split('T')[0];
+    const qualMaterialString = Array.isArray(dadosForm.qualMaterial) ? dadosForm.qualMaterial.join(', '): dadosForm.qualMaterial;
+    const publicoString = Array.isArray(dadosForm.qualPublico) ? dadosForm.qualPublico.join(', ') : dadosForm.qualPublico;
+
+    const insertDemanda = `INSERT INTO demandas (
+        numeroSolicitacao,
+        nome,
+        telefone,
+        qualEmpresa,
+        qualUnidade,
+        tipoMaterial,
+        qualMaterial,
+        quemImprime,
+        autorizacao,
+        temLogo,
+        corretoras,
+        administradoras,
+        operadora,
+        logosAdicionais,
+        valorMaterial,
+        qualPublico,
+        especificacoes
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `
+
+    const insertstatusdemandas = `INSERT INTO statusdemandas (
+        numeroSolicitacao,
+        statusdemanda,
+        dataRegistro
+    ) VALUES(?, ?, ?)`
+
+    const insertAnexos = 'INSERT INTO anexos (numeroSolicitacao, urlArquivo) VALUES(?, ?)';
+
+    db.query(insertDemanda, [
+            numeroSolicitacao, 
+            dadosForm.nome,
+            dadosForm.telefone,
+            dadosForm.qualEmpresa,
+            dadosForm.qualUnidade,
+            dadosForm.tipoMaterial,
+            qualMaterialString,
+            dadosForm.quemImprimi,
+            dadosForm.autorizacaoTem || null,
+            dadosForm.temLogo || null,
+            corretorasString || null,
+            administradorasString || null,
+            operadoraString || null,
+            dadosForm.logosNovasNomes || null,
+            dadosForm.infosValores || null,
+            publicoString,
+            dadosForm.maisInfos
+        ], (err, result) => {
+        if(err) {
+            console.log(err)
+            logger.error({
+                message: 'Erro ao cadastrar demanda: ' + numeroSolicitacao,
+                error: err.message,
+                stack: err.stack,
+                timestamp: new Date().toISOString()
+            });
+        }
+        const statusdemanda = 'ENVIADA'
+        db.query(insertstatusdemandas, [numeroSolicitacao, statusdemanda , dataAtualSplit], (err, result) => {
+            if(err) {
+                console.error('Erro ao inserir status ao BD', err);
+                logger.error({
+                    message: 'Erro ao inserir status inicial da demanda: ' + numeroSolicitacao,
+                    error: err.message,
+                    stack: err.stack,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            if (anexos && Object.keys(anexos).length > 0) {
+                let numAnexosProcessados = 0;
+                const numTotalAnexos = Object.keys(anexos).length;
+            
+                Object.entries(anexos).forEach(([nomeArquivo, urlArquivo]) => {
+                    db.query(insertAnexos, [numeroSolicitacao, urlArquivo], (err, result) => {
+                        if (err) {
+                            console.error('Erro ao inserir anexo ao BD', err);
+                            logger.error({
+                                message: 'Erro ao inserir anexo ao banco de dados da demanda: ' + numeroSolicitacao,
+                                error: err.message,
+                                stack: err.stack,
+                                timestamp: new Date().toISOString()
+                            });
+                        } else {
+                            numAnexosProcessados++;
+                            if (numAnexosProcessados === numTotalAnexos) {
+                                // Todos os anexos foram processados, enviar resposta
+                                return res.status(200).json({
+                                    mensagem: 'Dados enviados com sucesso',
+                                    nome: nome,
+                                    numeroSolicitacao: numeroSolicitacao
+                                });
+                            }
+                        }
+                    });
+                });
+            } else {
+                // Não há anexos para processar, enviar resposta
+                return res.status(200).json({
+                    mensagem: 'Dados enviados com sucesso',
+                    nome: nome,
+                    numeroSolicitacao: numeroSolicitacao
+                });
+            }            
+        }); 
+    }); 
 })
 
 app.get('/sucesso/:numeroSolicitacao/:nome', (req,res) => {

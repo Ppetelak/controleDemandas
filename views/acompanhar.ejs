@@ -61,9 +61,6 @@
                                 <span> Entregue </span>
                             </div>
                         </div>
-                        <div class="motivoRecusa">
-                            <p><strong>Motivo da Recusa: </strong>  <%= motivoRecusa %> </p>
-                        </div> 
                     <% } %>
                     <% if(status === 'ENVIADA') { %>
                         <div class="status-column">
@@ -253,9 +250,25 @@
                     <% } %>
                 </div>
                 <div class="row">
+                    <% if(status === 'RECUSADA') { %>
+                        <div class="motivoRecusa mb-3">
+                            <p><strong>Motivo da Recusa: </strong>  <%= motivoRecusa %> </p>
+                        </div> 
+                    <% } %>
+                    <% if(status === 'APROVAÇÃO') { %>
+                        <div class="motivoRecusa mb-3">
+                            <p><strong>OBSERVAÇÕES: </strong>  <%= demanda.textoAprovacao %> </p>
+                        </div> 
+                    <% } %>
+                </div>
+                <div class="row">
                     <button class="btn btn-primary verMais" type="button" onclick="toggleInfos()">
                         VER MAIS <i id="chevronIcon" class="bi bi-chevron-double-down"></i>
                     </button>
+                    <% if(status === 'ENTREGUE') { %>
+                        <button class="btn btn-secondary verDetalhesEntrega mt-3" type="button" data-numeroSolicitacao="<%= demanda.numeroSolicitacao %>" onclick="verEntrega(this)"> VER DETALHES DA ENTREGA
+                        </button>
+                    <% } %>
                 </div>
             </div>
             <div class="col-8">
@@ -264,6 +277,40 @@
         </div>
         <div class="maisInfos" style="display: none;"> 
             <%- include('maisInfosDemanda') %>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">ENTREGA - Solicitação Nº <span id="numeroSolicitacaoTitulo"></span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="numeroSolicitacaoInput">
+                        <span> No link abaixo você poderá visualizar o material solicitado</span> </br>
+                        <a href="<%= demanda.linkEntrega %>" target="_blank"> Clique aqui para visualizar o material no drive</a>
+                        <div class="mb-3 mt-3">
+                            <label for="alteracao" class="form-label text-align-center">SOLICITAR ALTERAÇÕES</label> <br>
+                            <span> Após visualizar o material você pode solicitar alterações nesse campo abaixo e enviar, automaticamente o status passará para "em alteração" e seremos notificados para realizar as alterações</span>
+                                <textarea class="form-control" id="alteracoes" name="alteracoes" rows="3"></textarea>
+                                <span> <strong>IMPORTANTE:</strong> Após solicitação de alteração seu material será passado para produção novamente e terá um novo prazo de entrega</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" onclick="solicitarAlteracoes()">Solicitar Alterações</button>
+                    </div>
+                    <div id="sucessAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
+                        <span>Alteração realizada com sucesso, aguarde, estamos atualizando a página ...</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div id="customAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+                        <strong>Atenção!</strong> <span id="customAlertMessage"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
         </div>
 </body>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
@@ -285,11 +332,66 @@
 
         // Alternar o texto do botão entre "VER MAIS" e "ESCONDER"
         var buttonText = maisInfos.is(':visible') ? 'ESCONDER' : 'VER MAIS';
-        $('button').text(buttonText);
+        $('.verMais').text(buttonText);
     }
     function voltarNavegador() {
         window.history.back();
     }
+    var myModal;
+    function verEntrega(button) {
+        let numeroSolicitacao = button.dataset.numerosolicitacao;
+        document.getElementById('numeroSolicitacaoInput').value = numeroSolicitacao;
+        document.getElementById('numeroSolicitacaoTitulo').textContent = numeroSolicitacao;
+        abrirModal();
+    }
+    function abrirModal() {
+        myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+            keyboard: false
+        });
+        myModal.show();
+    }
+    function fecharModal() {
+        myModal.hide();
+    }
+
+    function solicitarAlteracoes () {
+        const numeroSolicitacao = document.getElementById('numeroSolicitacaoInput').value;
+        const descricao = document.getElementById('alteracoes').value
+
+        //console.log(numeroSolicitacao, descricao)
+
+        fetch(`/solicitacaoAlteracao/${numeroSolicitacao}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ descricao: descricao })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("sucessAlert").style.display = "block";
+            document.querySelector("#sucessAlert .btn-close").addEventListener("click", function() {
+                document.getElementById("sucessAlert").style.display = "none";
+            })
+            setTimeout(function() {
+                window.location.reload()
+            }, 3000);
+        })
+        .catch(error => {
+            console.error('Erro ao enviar dados:', error);
+            exibirAlerta('Erro ao enviar alteração, entre em contato com nossa equipe via WhatsApp')
+        });
+    }
+
+    function exibirAlerta(mensagem) {
+        document.getElementById("customAlertMessage").textContent = mensagem;
+        document.getElementById("customAlert").style.display = "block";
+        document.querySelector("#customAlert .btn-close").addEventListener("click", function() {
+        // Oculta o alerta quando o botão de fechar é clicado
+            document.getElementById("customAlert").style.display = "none";
+        })
+    }
+
 </script>
 
 </html>

@@ -6,6 +6,7 @@
         <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="/css/styles.css">
         <link rel="stylesheet" href="/css/dashboard.css">
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,11 +19,64 @@
     <!-- Seu conteúdo da dashboard aqui -->
     <div class="container mt-5">
         <div class="row">
+            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#legendaCollapse" aria-expanded="false" aria-controls="legendaCollapse">
+                <h6> Mostrar Legenda </h6>
+            </button>
+        </div>
+        <div class="row">
+            <div class="collapse" id="legendaCollapse">
+                <div class="status-bar">
+                    <div class="status-column">
+                        <i class="bi bi-envelope-arrow-down ativo"></i>
+                        <span> Solicitação <br> recebida</span><br>
+                        <strong><span class="enviada"> ENVIADA </span> </strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-x-lg naoAceita"></i>
+                        <span> Solicitação <br> não aceita</span><br>
+                        <strong><span class=recusada>RECUSADA</span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-hand-thumbs-up"></i>
+                        <span> Solicitação <br> aceita</span><br>
+                        <strong><span class="recebida"> RECEBIDA </span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-kanban"></i>
+                        <span> Em <BR>produção </span><br>
+                        <strong><span class="producao">PRODUÇÃO </span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-clock-history"></i>
+                        <span> Aguardando <br> aprovação </span>
+                        <br>
+                        <strong> <span class="aprovacao">APROVAÇÃO</span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-check-lg"></i>
+                        <span> Aprovado </span><br><br>
+                        <strong><span class="aprovado">APROVADA </span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-envelope-check"></i>
+                        <span> Entregue </span><br><br>
+                        <strong><span class="entregue"> ENTREGUE </span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-arrow-counterclockwise alteracaoIcone"></i>
+                        <span> <strong> Alteração <br>Solicitada </strong> </span> <br><br>
+                        <strong> <span class="alteracao"> ALTERAÇÃO </span></strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">Número Solicitação</th>
-                        <th scope="col">Data Abertura</i></th>
+                        <th scope="col">Data Abertura</th>
+                        <th scope="col">Data Entrega</th>
                         <th scope="col">Status</th>
                         <th scope="col">Alterar</th>
                     </tr>
@@ -31,7 +85,36 @@
                             <tr>
                                 <th scope="row" class="numeroDemanda" data-numero="<%= demanda.numeroSolicitacao %>"><%= demanda.numeroSolicitacao %></th>
                                 <td><%= demanda.dataAbertura.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
-                                <td class="status-cell"><%= demanda.ultimoStatus %></td>
+                                <td>
+                                    <div id="dataEntregaAtual">
+                                        <% if(demanda.dataEntrega) { %>
+                                            <%= demanda.dataEntrega.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %>
+                                        <% } else { %>
+                                            <span> Sem data de entrega </span>
+                                        <% } %>
+                                        <i class="bi bi-pencil-square" onclick="exibirEdicaoData()"></i>
+                                    </div>
+                                    <div id="novaDataEntregaDiv" style="display: none;">
+                                        Data Entrega Atual:
+                                        <% if(demanda.dataEntrega) { %>
+                                            <%= demanda.dataEntrega.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %>
+                                        <% } else { %>
+                                            <span> Sem data de entrega </span>
+                                        <% } %> <br><br>
+                                        <label for="novaDataEntrega" class="form-label">Inserir nova data de Entrega</label>
+                                        <input id="novaDataEntrega" class="form-control" type="date">
+                                        <button class="btn btn-primary mt-3" onclick="alterarDataEntrega(<%= demanda.numeroSolicitacao %>)">Salvar Nova Data</button>
+                                        <i class="bi bi-x-circle mt-3" onclick="cancelarEdicaoData()"></i>
+                                    </div>
+                                        
+                                </td>
+                                <td class="status-cell"><span class="<%= demanda.ultimoStatus
+                                    .toLowerCase()
+                                    .replace(/\s+/g, '-')
+                                    .replace(/ç/g, 'c')
+                                    .replace(/[ãâáà]/g, 'a')
+                                    .replace(/[õôóò]/g, 'o')
+                                %>"><%= demanda.ultimoStatus %></span></td>
                                 <td> 
                                     <button class="btn btn-primary editar-status-button" data-numeroSolicitacao="<%= demanda.numeroSolicitacao %>">Editar Status</button>
                                 </td>
@@ -101,40 +184,25 @@
             </div>
         </div>
 
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Referência:</strong> <br>
-                        <% function isImage(filename) { %>
-                        <%    var ext = filename.split('.').pop().toLowerCase(); %>
-                        <%    return ext === 'jpg' || ext === 'jpeg' || ext === 'png' || ext === 'gif' || ext === 'bmp'; %>
-                        <% } %>
-                        <% if (demanda.referenciaAnexo) { %>
-                            <% if (isImage(demanda.referenciaAnexo)) { %>
-                                <img src="/<%= demanda.referenciaAnexo %>" style="max-width: 100%;">
-                            <% } else { %>
-                                <a href="/<%= demanda.referenciaAnexo %>" target="_blank">Visualizar PDF</a>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title">Anexos</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <% if (anexos.length > 0) { %>
+                            <% for (let i = 0; i < anexos.length; i++) { %>
+                                <a href="<%= anexos[i].urlArquivo %>" target="_blank">Anexo <%= i + 1 %></a>
                             <% } %>
                         <% } else { %>
-                            Imagem não anexada.
+                            <p>Sem anexos nessa demanda</p>
                         <% } %>
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Autorização:</strong> <br>
-                        <% if (demanda.autorizacao) { %>
-                            <% if (isImage(demanda.autorizacao)) { %>
-                                <img src="/<%= demanda.autorizacao %>" style="max-width: 100%;">
-                            <% } else { %>
-                                <a href="/<%= demanda.autorizacao %>" target="_blank">Visualizar PDF</a>
-                            <% } %>
-                        <% } else { %>
-                            Imagem não anexada.
-                        <% } %>
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
+        
         
         <h4 class="text-center"> Atualizações de Status </h4>
 
@@ -158,6 +226,34 @@
                 <% } %>
             </tbody>
         </table>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title"> ALTERAÇÕES </h5>
+            </div>
+            <div class="card-body">
+                <table class="table" id="tabelaStatus">
+                    <thead>
+                        <% if(alteracoes.length > 0) { %>
+                        <tr>
+                            <th scope="col">Data</th>
+                            <th scope="col">Alteração</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <% alteracoes.forEach(function(alteracao) { %>
+                                <tr>
+                                    <td><%= alteracao.dataAlteracao.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
+                                    <td><%= alteracao.descricao %></td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <p> Sem alterações no sistema </p>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -177,6 +273,7 @@
                         <option value="APROVAÇÃO">APROVAÇÃO</option>
                         <option value="APROVADA">APROVADA</option>
                         <option value="ENTREGUE">ENTREGUE</option>
+                        <option value="ALTERAÇÃO">ALTERAÇÃO</option>
                     </select>
                     <div id="dataEntregaInput" style="display: none;">
                         <label for="dataEntrega">Data de Previsão de Entrega:</label>
@@ -185,6 +282,18 @@
                     <div id="motivoRecusaInput" style="display: none;">
                         <label for="motivoRecusa">Motivo da Recusa:</label>
                         <textarea id="motivoRecusa" class="form-control"></textarea>
+                    </div>
+                    <div id="alteracaoInput" style="display: none;">
+                        <label for="alteracao">Qual alteração foi solicitada:</label>
+                        <textarea id="alteracao" class="form-control"></textarea>
+                    </div>
+                    <div id="linkEntregaInput" style="display: none;">
+                        <label for="linkEntrega">Link para cliente baixar/visualizar o material</label>
+                        <input id="linkEntrega" class="form-control">
+                    </div>
+                    <div id="textoAprovacaoInput" style="display: none;">
+                        <label for="textoAprovacao">Observações sobre a aprovação</label>
+                        <textarea id="textoAprovacao" class="form-control"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -39,8 +39,25 @@ CREATE TABLE usuarios (
 
 CREATE TABLE alteracoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    numeroSolicitacao INT NOT NULL,
-    dataAlteracao DATETIME NOT NULL,
+    numeroSolicitacao VARCHAR(255),
+    dataAlteracao DATE,
     descricao TEXT
 );
+
+CREATE TABLE anexos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    numeroSolicitacao VARCHAR(255),
+    urlArquivo TEXT
+);
+
+ALTER TABLE demandas DROP COLUMN referenciaAnexo;
+ALTER TABLE demandas ADD COLUMN logosAdicionais TEXT;
+
+ALTER TABLE demandas
+ADD COLUMN linkEntrega text;
+
+ALTER TABLE demandas
+ADD COLUMN textoAprovacao text;
+
+
 

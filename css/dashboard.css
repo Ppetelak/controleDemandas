@@ -65,6 +65,25 @@ body {
     align-items: center; 
 }
 
+#legendaCollapse {
+    background: #f1f1f1;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.status-column .naoAceita {
+    background: #ffd4d4;
+    color: #ff0202;
+    outline: #ff0202 solid 1px;
+}
+
+.status-column .alteracaoIcone {
+    background: #fbff1b;
+    color: #1e1f0c;
+    outline: #1e1f0c solid 1px;
+
+}
+
 .mensagem {
     position: fixed;
     bottom: 0;
@@ -73,6 +92,62 @@ body {
     background-color: #f0f0f0; /* Cor de fundo da mensagem */
     text-align: center; /* Centralizar o texto horizontalmente */
     display: none;
+}
+
+.alteracao { 
+    background: red;
+    color: white;
+    width: fit-content;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.enviada {
+    background: green;
+    color: white;
+    width: fit-content;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.recusada {
+    background: black;
+    color: white;
+    width: fit-content;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.entregue {
+    background:greenyellow;
+    color: black;
+    width: fit-content;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.recebida {
+    background: blueviolet;
+    color: white;
+    width: fit-content;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.producao {
+    background: var(--orange);
+    color: white;
+    width: fit-content;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.aprovacao, .aprovado {
+    background: var(--blue);
+    color: white;
+    width: fit-content;
+    padding: 4px;
+    border-radius: 12px;
 }
 
 

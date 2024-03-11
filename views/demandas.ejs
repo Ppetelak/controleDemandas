@@ -8,7 +8,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-
+        <link rel="stylesheet" href="/css/styles.css">
         <link rel="stylesheet" href="/css/dashboard.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,43 +20,54 @@
     <!-- Seu conteúdo da dashboard aqui -->
     <div class="container mt-5">
         <div class="row">
-            <h6>Legenda: </h6>
-            <div class="status-bar">
-                <div class="status-column">
-                    <i class="bi bi-envelope-arrow-down ativo"></i>
-                    <span> Solicitação <br> recebida</span><br>
-                    <strong>ENVIADA</strong>
-                </div>
-                <div class="status-column">
-                    <i class="bi bi-x-lg naoAceita"></i>
-                    <span> Solicitação <br> não aceita</span><br>
-                    <strong>RECUSADA</strong>
-                </div>
-                <div class="status-column">
-                    <i class="bi bi-hand-thumbs-up"></i>
-                    <span> Solicitação <br> aceita</span><br>
-                    <strong>RECEBIDA</strong>
-                </div>
-                <div class="status-column">
-                    <i class="bi bi-kanban"></i>
-                    <span> Em <BR>produção </span><br>
-                    <strong>PRODUÇÃO</strong>
-                </div>
-                <div class="status-column">
-                    <i class="bi bi-clock-history"></i>
-                    <span> Aguardando <br> aprovação </span>
-                    <br>
-                    <strong>APROVAÇÃO</strong>
-                </div>
-                <div class="status-column">
-                    <i class="bi bi-check-lg"></i>
-                    <span> Aprovado </span><br><br>
-                    <strong>APROVADA</strong>
-                </div>
-                <div class="status-column">
-                    <i class="bi bi-envelope-check"></i>
-                    <span> Entregue </span><br><br>
-                    <strong>ENTREGUE</strong>
+            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#legendaCollapse" aria-expanded="false" aria-controls="legendaCollapse">
+                <h6> Mostrar Legenda </h6>
+            </button>
+        </div>
+        <div class="row">
+            <div class="collapse" id="legendaCollapse">
+                <div class="status-bar">
+                    <div class="status-column">
+                        <i class="bi bi-envelope-arrow-down ativo"></i>
+                        <span> Solicitação <br> recebida</span><br>
+                        <strong><span class="enviada"> ENVIADA </span> </strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-x-lg naoAceita"></i>
+                        <span> Solicitação <br> não aceita</span><br>
+                        <strong><span class=recusada>RECUSADA</span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-hand-thumbs-up"></i>
+                        <span> Solicitação <br> aceita</span><br>
+                        <strong><span class="recebida"> RECEBIDA </span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-kanban"></i>
+                        <span> Em <BR>produção </span><br>
+                        <strong><span class="producao">PRODUÇÃO </span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-clock-history"></i>
+                        <span> Aguardando <br> aprovação </span>
+                        <br>
+                        <strong> <span class="aprovacao">APROVAÇÃO</span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-check-lg"></i>
+                        <span> Aprovado </span><br><br>
+                        <strong><span class="aprovado">APROVADA </span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-envelope-check"></i>
+                        <span> Entregue </span><br><br>
+                        <strong><span class="entregue"> ENTREGUE </span></strong>
+                    </div>
+                    <div class="status-column">
+                        <i class="bi bi-arrow-counterclockwise alteracaoIcone"></i>
+                        <span> <strong> Alteração <br>Solicitada </strong> </span> <br><br>
+                        <strong> <span class="alteracao"> ALTERAÇÃO </span></strong>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,6 +89,7 @@
                     <option value="APROVAÇÃO">APROVAÇÃO</option>
                     <option value="APROVADA">APROVADA</option>
                     <option value="ENTREGUE">ENTREGUE</option>
+                    <option value="ALTERAÇÃO">ALTERAÇÃO</option>
                     <!-- Adicione mais opções conforme necessário -->
                 </select>
             </div>
@@ -91,7 +103,8 @@
                 <tr>
                     <th scope="col">Número Solicitação</th>
                     <th scope="col">Empresa</th>
-                    <th scope="col">Data Abertura</i></th>
+                    <th scope="col">Data Abertura</th>
+                    <th scope="col">Data Entrega</th>
                     <th scope="col">Status</th>
                     <th scope="col">Ações</th>
                 </tr>
@@ -102,13 +115,26 @@
                             <th scope="row" class="numeroDemanda" data-numero="<%= demanda.numeroSolicitacao %>"><%= demanda.numeroSolicitacao %></th>
                             <td><%= demanda.qualEmpresa %></td>
                             <td><%= demanda.dataAbertura.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
-                            <td class="status-cell"><%= demanda.ultimoStatus %></td>
+                            <td>
+                            <% if(demanda.dataEntrega) { %>
+                                <%= demanda.dataEntrega.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %>
+                            <% } else { %>
+                                <span> Sem data de entrega </span>
+                            <% } %>
+                            </td>
+                            <td class="status-cell"><span class="<%= demanda.ultimoStatus
+                                .toLowerCase()
+                                .replace(/\s+/g, '-')
+                                .replace(/ç/g, 'c')
+                                .replace(/[ãâáà]/g, 'a')
+                                .replace(/[õôóò]/g, 'o')
+                            %>"><%= demanda.ultimoStatus %></span></td>
                             <td>
                                 <button class="btn btn-primary editar-status-button" data-numeroSolicitacao="<%= demanda.numeroSolicitacao %>">Editar Status</button>
                                 <a href="/demanda/<%= demanda.numeroSolicitacao %>" target="_blank"><button class="btn btn-primary">Detalhes</button></a>
                             </td>
                         </tr>
-                   <% }); %>
+                    <% }); %>
                 <% } else { %>
                     <p> Sem demandas no sistema </P>
                 <% } %>
@@ -134,6 +160,7 @@
                         <option value="APROVAÇÃO">APROVAÇÃO</option>
                         <option value="APROVADA">APROVADA</option>
                         <option value="ENTREGUE">ENTREGUE</option>
+                        <option value="ALTERAÇÃO">ALTERAÇÃO</option>
                     </select>
                     <div id="dataEntregaInput" style="display: none;">
                         <label for="dataEntrega">Data de Previsão de Entrega:</label>
@@ -142,6 +169,18 @@
                     <div id="motivoRecusaInput" style="display: none;">
                         <label for="motivoRecusa">Motivo da Recusa:</label>
                         <textarea id="motivoRecusa" class="form-control"></textarea>
+                    </div>
+                    <div id="alteracaoInput" style="display: none;">
+                        <label for="alteracao">Qual alteração foi solicitada:</label>
+                        <textarea id="alteracao" class="form-control"></textarea>
+                    </div>
+                    <div id="linkEntregaInput" style="display: none;">
+                        <label for="linkEntrega">Link para cliente baixar/visualizar o material</label>
+                        <input id="linkEntrega" class="form-control">
+                    </div>
+                    <div id="textoAprovacaoInput" style="display: none;">
+                        <label for="textoAprovacao">Observações sobre a aprovação</label>
+                        <textarea id="textoAprovacao" class="form-control"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

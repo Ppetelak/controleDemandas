@@ -65,40 +65,18 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            <h5 class="card-title">Anexos e outros</h5>
+            <h5 class="card-title">Anexos</h5>
         </div>
-
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Referência:</strong> <br>
-                        <% function isImage(filename) { %>
-                        <%    var ext = filename.split('.').pop().toLowerCase(); %>
-                        <%    return ext === 'jpg' || ext === 'jpeg' || ext === 'png' || ext === 'gif' || ext === 'bmp'; %>
+                    <% if (anexos.length > 0) { %>
+                        <% for (let i = 0; i < anexos.length; i++) { %>
+                            <a href="<%= anexos[i].urlArquivo %>" target="_blank">Anexo <%= i + 1 %></a>
                         <% } %>
-                        <% if (demanda.referenciaAnexo) { %>
-                            <% if (isImage(demanda.referenciaAnexo)) { %>
-                                <img src="/<%= demanda.referenciaAnexo %>" style="max-width: 100%;">
-                            <% } else { %>
-                                <a href="/<%= demanda.referenciaAnexo %>" target="_blank">Visualizar PDF</a>
-                            <% } %>
-                        <% } else { %>
-                            Imagem não anexada.
-                        <% } %>
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Autorização:</strong> <br>
-                        <% if (demanda.autorizacao) { %>
-                            <% if (isImage(demanda.autorizacao)) { %>
-                                <img src="/<%= demanda.autorizacao %>" style="max-width: 100%;">
-                            <% } else { %>
-                                <a href="/<%= demanda.autorizacao %>" target="_blank">Visualizar PDF</a>
-                            <% } %>
-                        <% } else { %>
-                            Imagem não anexada.
-                        <% } %>
-                    </p>
+                    <% } else { %>
+                        <p>Sem anexos nessa demanda</p>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -137,7 +115,26 @@
             <h5 class="card-title"> ALTERAÇÕES </h5>
         </div>
         <div class="card-body">
-            Aqui virá as solicitações de alterações
+            <table class="table" id="tabelaStatus">
+                <thead>
+                    <% if(alteracoes.length > 0) { %>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Alteração</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <% alteracoes.forEach(function(alteracao) { %>
+                            <tr>
+                                <td><%= alteracao.dataAlteracao.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
+                                <td><%= alteracao.descricao %></td>
+                            </tr>
+                       <% }); %>
+                    <% } else { %>
+                        <p> Sem alterações no sistema </P>
+                    <% } %>
+                </tbody>
+            </table>
         </div>
     </div>
     <% } else { %>
