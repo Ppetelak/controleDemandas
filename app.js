@@ -17,7 +17,7 @@ const { url } = require('inspector')
 const ExcelJS = require('exceljs');
 const uuid = require('uuid'); 
 const port = process.env.PORT || 3000;
-const appUrl = process.env.APP_URL || 'http://demandas.midaideal.com';
+const appUrl = process.env.APP_URL || 'http://demandas.midiaideal.com';
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -40,10 +40,11 @@ connectToDatabase()
         });
     })
     .catch((error) => {
-        app.get('*', (req, res) => {
-            res.redirect('/error404');
-        });
         console.error('Erro ao conectar ao banco de dados:', error);
+        setTimeout(connectToDatabase, 2000);
+        /* app.get('*', (req, res) => {
+            res.redirect('/error404');
+        }); */
         process.exit(1);
     });
 
@@ -58,7 +59,10 @@ const secretKey = generateSecretKey();
 app.use(session({
     secret: secretKey,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000 // 24 horas em milissegundos
+    }
 }));
 
 const verificaAutenticacao = (req, res, next) => {
