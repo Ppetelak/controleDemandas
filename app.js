@@ -41,10 +41,10 @@ connectToDatabase()
     })
     .catch((error) => {
         console.error('Erro ao conectar ao banco de dados:', error);
-        setTimeout(connectToDatabase, 2000);
-        /* app.get('*', (req, res) => {
+        app.get('*', (req, res) => {
             res.redirect('/error404');
-        }); */
+        });
+        setTimeout(connectToDatabase, 2000);
         process.exit(1);
     });
 
