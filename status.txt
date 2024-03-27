@@ -1,7 +1,0 @@
-ENVIADA -> Solicitação enviada
-RECUSADA -> Solicitação não aceita
-RECEBIDA -> Solicitação aceita
-PRODUÇÃO -> Em produção
-APROVAÇÃO -> Aguardando aprovação
-APROVADA -> Aprovado 
-ENTREGUE -> Entregue 

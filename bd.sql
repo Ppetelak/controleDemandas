@@ -16,7 +16,9 @@ CREATE TABLE demandas (
     administradoras TEXT,
     operadora TEXT,
     especificacoes TEXT,
-    referenciaAnexo VARCHAR(500)
+    logosAdicionais TEXT,
+    linkEntrega text;
+    textoAprovacao text;
 );
 
 CREATE TABLE statusDemandas (
@@ -33,10 +35,6 @@ CREATE TABLE usuarios (
     nome VARCHAR(250)
 )
 
-
-/* ATUALIZAÇÕES A SEREM FEITAS NO SERVER */
--- Adicionar uma nova tabela chamada alterações -- 
-
 CREATE TABLE alteracoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     numeroSolicitacao VARCHAR(255),
@@ -49,15 +47,6 @@ CREATE TABLE anexos (
     numeroSolicitacao VARCHAR(255),
     urlArquivo TEXT
 );
-
-ALTER TABLE demandas DROP COLUMN referenciaAnexo;
-ALTER TABLE demandas ADD COLUMN logosAdicionais TEXT;
-
-ALTER TABLE demandas
-ADD COLUMN linkEntrega text;
-
-ALTER TABLE demandas
-ADD COLUMN textoAprovacao text;
 
 
 
